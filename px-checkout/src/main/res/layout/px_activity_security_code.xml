@@ -120,7 +120,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_weight="0.2">
 
-                        <ImageView
+                        <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/mpsdkSecurityCodeCardIcon"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

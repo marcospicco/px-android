@@ -36,7 +36,7 @@
                 android:paddingLeft="10dp"
                 android:paddingStart="10dp">
 
-                <ImageView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -113,7 +113,7 @@
 
     </FrameLayout>
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/mpsdkCardShadowBorder"
         android:layout_width="@dimen/px_card_size_big_width"
         android:layout_height="@dimen/px_card_size_big_height"

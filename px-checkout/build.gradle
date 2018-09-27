@@ -35,6 +35,5 @@ dependencies {
     api project(':px-services')
 
     implementation "com.google.code.gson:gson:$gson"
-    implementation "com.squareup.picasso:picasso:$picasso"
     implementation "com.mercadolibre.android:ui:$meli_ui_lib"
 }

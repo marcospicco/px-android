@@ -35,7 +35,7 @@
             android:textColor="#ffffff"
             android:textSize="@dimen/button_text_size"/>
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/cho_loading_buy_circular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             tools:visibility="visible"/>
 
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/cho_loading_buy_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

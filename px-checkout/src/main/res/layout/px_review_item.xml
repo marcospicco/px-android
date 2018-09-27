@@ -17,7 +17,7 @@
         android:paddingStart="@dimen/px_m_margin"
         android:paddingTop="@dimen/px_l_margin">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/item_image"
             android:layout_width="@dimen/px_m_height"
             android:layout_height="@dimen/px_m_height"

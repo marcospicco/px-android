@@ -2,6 +2,7 @@ package com.mercadopago.android.px.internal.features;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,18 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.mercadopago.android.px.R;
+import com.mercadopago.android.px.internal.util.TextUtil;
 import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.model.BankDeal;
-import com.squareup.picasso.Callback;
+import javax.annotation.Nullable;
 
-public class BankDealDetailActivity extends AppCompatActivity implements Callback {
+public class BankDealDetailActivity extends AppCompatActivity implements ControllerListener<ImageInfo> {
 
     private static final String EXTRA_MODEL = "extra_model";
 
-    private ImageView logo;
+    private SimpleDraweeView logo;
     private TextView logoName;
 
     private static class BankDealDetailModel implements Parcelable {
@@ -115,20 +119,16 @@ public class BankDealDetailActivity extends AppCompatActivity implements Callbac
         final TextView expDate = findViewById(R.id.exp_date);
         final TextView legals = findViewById(R.id.legals);
         expDate.setText(getString(R.string.bank_deal_details_date_format, model.formattedExpirationDate));
-        ViewUtils.loadOrGone(Html.fromHtml(model.dealTitle), title);
+
+        if (!TextUtil.isEmpty(model.dealTitle)) {
+            ViewUtils.loadOrGone(Html.fromHtml(model.dealTitle), title);
+        } else {
+            title.setVisibility(View.GONE);
+        }
+
         ViewUtils.loadOrGone(model.legal, legals);
         logoName.setText(model.issuerName);
         ViewUtils.loadOrCallError(model.imgUrl, logo, this);
-    }
-
-    @Override
-    public void onSuccess() {
-        logoName.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onError() {
-        logo.setVisibility(View.GONE);
     }
 
     private void initToolbar() {
@@ -147,5 +147,32 @@ public class BankDealDetailActivity extends AppCompatActivity implements Callbac
                 onBackPressed();
             }
         });
+    }
+
+    @Override
+    public void onSubmit(final String id, final Object callerContext) {
+    }
+
+    @Override
+    public void onFinalImageSet(final String id, @Nullable final ImageInfo imageInfo,
+        @Nullable final Animatable animatable) {
+        logoName.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onIntermediateImageSet(final String id, @Nullable final ImageInfo imageInfo) {
+    }
+
+    @Override
+    public void onIntermediateImageFailed(final String id, final Throwable throwable) {
+    }
+
+    @Override
+    public void onFailure(final String id, final Throwable throwable) {
+        logo.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRelease(final String id) {
     }
 }

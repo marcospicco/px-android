@@ -1,22 +1,21 @@
 package com.mercadopago.android.px.internal.features.review_and_confirm.components.items;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.generic.RoundingParams;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.util.CircleTransform;
-import com.mercadopago.android.px.internal.util.ScaleUtil;
 import com.mercadopago.android.px.internal.util.TextUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.internal.view.Renderer;
-import com.squareup.picasso.Picasso;
 import java.util.Locale;
 
 public class ReviewItemRenderer extends Renderer<ReviewItem> {
@@ -29,16 +28,16 @@ public class ReviewItemRenderer extends Renderer<ReviewItem> {
         final View itemView =
             LayoutInflater.from(parent.getContext()).inflate(R.layout.px_review_item, parent, false);
 
-        final ImageView itemImage = itemView.findViewById(R.id.item_image);
+        final SimpleDraweeView itemImage = itemView.findViewById(R.id.item_image);
         final MPTextView itemTitle = itemView.findViewById(R.id.item_title);
         final MPTextView itemSubtitle = itemView.findViewById(R.id.item_subtitle);
         final MPTextView itemQuantity = itemView.findViewById(R.id.item_quantity);
         final MPTextView itemPrice = itemView.findViewById(R.id.item_price);
 
         if (component.hasItemImage()) {
-            drawItemFromUrl(itemImage, component, context);
-        } else if (component.hasIcon()) {
-            drawItemFromResource(itemImage, component.props.icon);
+            drawItemFromUrl(itemImage, component);
+        } else if (component.hasIcon() && component.props.icon != null) {
+            itemImage.setImageResource(component.props.icon);
         }
 
         setText(itemTitle, component.props.itemModel.title);
@@ -51,23 +50,20 @@ public class ReviewItemRenderer extends Renderer<ReviewItem> {
         return itemView;
     }
 
-    private void drawItemFromUrl(final ImageView itemImage, final ReviewItem component, final Context context) {
-        final int dimen =
-            ScaleUtil.getPxFromDp((int) context.getResources().getDimension(R.dimen.px_m_height), context);
-        Picasso.with(context)
-            .load(component.props.itemModel.imageUrl)
-            .transform(new CircleTransform())
-            .resize(dimen, dimen)
-            .centerInside()
-            .placeholder(component.props.icon)
-            .error(component.props.icon)
-            .into(itemImage);
+    private void drawItemFromUrl(final SimpleDraweeView itemImage, final ReviewItem component) {
+
+        itemImage.setHierarchy(new GenericDraweeHierarchyBuilder(itemImage.getResources())
+            .setRoundingParams(RoundingParams.asCircle())
+            .build());
+
+        itemImage.setImageURI(component.props.itemModel.imageUrl);
+        if (component.props.icon != null) {
+            final GenericDraweeHierarchy hierarchy = itemImage.getHierarchy();
+            hierarchy.setPlaceholderImage(component.props.icon);
+            hierarchy.setFailureImage(component.props.icon);
+        }
     }
 
-    private void drawItemFromResource(final ImageView itemImage,
-        @DrawableRes final int resource) {
-        itemImage.setImageResource(resource);
-    }
 
     private void drawProductQuantity(final MPTextView itemQuantity, final ReviewItem.Props props,
         final Context context) {

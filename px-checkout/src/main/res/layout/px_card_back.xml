@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:foreground="@drawable/px_card_shadow_rounded"
         android:padding="6dp">
 
         <FrameLayout
@@ -20,7 +21,7 @@
             android:layout_gravity="center"
             android:background="@drawable/px_new_card_layout">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/mpsdkCardImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -91,7 +92,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.65">
 
-                    <ImageView
+                    <com.facebook.drawee.view.SimpleDraweeView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/px_card_back_shadow"/>
@@ -100,12 +101,6 @@
         </FrameLayout>
     </FrameLayout>
 
-    <ImageView
-        android:id="@+id/mpsdkCardShadowBorder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:src="@drawable/px_card_shadow_rounded"/>
 </FrameLayout>
 
 

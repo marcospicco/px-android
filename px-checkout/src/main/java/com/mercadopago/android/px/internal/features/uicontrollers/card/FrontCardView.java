@@ -96,7 +96,7 @@ public class FrontCardView {
         mSecurityCodeLength = securityCodeLength;
     }
 
-    public void hasToShowSecurityCode(boolean show) {
+    public void hasToShowSecurityCode(final boolean show) {
         if (show) {
             showEmptySecurityCode();
         } else {
@@ -104,7 +104,7 @@ public class FrontCardView {
         }
     }
 
-    public void setLastFourDigits(String lastFourDigits) {
+    public void setLastFourDigits(final String lastFourDigits) {
         mLastFourDigits = lastFourDigits;
     }
 
@@ -322,15 +322,15 @@ public class FrontCardView {
         onPaymentMethodSet();
     }
 
-    private void setCardColor(int color) {
+    private void setCardColor(final int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mCardLowApiImageView.setVisibility(View.GONE);
             mCardLollipopImageView.setVisibility(View.VISIBLE);
-            MPAnimationUtils.setImageViewColorLollipop(mCardLollipopImageView, mContext, color);
+            MPAnimationUtils.setImageViewColorLollipop(mCardLollipopImageView, color);
         } else {
             mCardLollipopImageView.setVisibility(View.GONE);
             mCardLowApiImageView.setVisibility(View.VISIBLE);
-            MPAnimationUtils.setImageViewColor(mCardLowApiImageView, mContext, color);
+            MPAnimationUtils.setImageViewColor(mCardLowApiImageView, color);
         }
     }
 
@@ -423,7 +423,7 @@ public class FrontCardView {
         }
         setCardColor(MPCardUIUtils.getCardColor(mPaymentMethod, mContext));
         setCardImage(getCardImage(mPaymentMethod));
-        int fontColor = MPCardUIUtils.getCardFontColor(mPaymentMethod, mContext);
+        final int fontColor = MPCardUIUtils.getCardFontColor(mPaymentMethod, mContext);
         setFontColor(fontColor, mCardNumberTextView);
     }
 

@@ -18,7 +18,7 @@
             android:layout_height="80dp"
             android:background="@drawable/px_light_grey_circle">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:adjustViewBounds="true"
                 android:id="@+id/mpsdkImage"
                 android:padding="16dp"

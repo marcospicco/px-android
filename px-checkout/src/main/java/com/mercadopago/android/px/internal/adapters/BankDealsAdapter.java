@@ -1,20 +1,22 @@
 package com.mercadopago.android.px.internal.adapters;
 
+import android.graphics.drawable.Animatable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.callbacks.OnSelectedCallback;
 import com.mercadopago.android.px.internal.util.TextUtil;
 import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.BankDeal;
-import com.squareup.picasso.Callback;
 import java.util.List;
+import javax.annotation.Nullable;
 
 public class BankDealsAdapter extends RecyclerView.Adapter<BankDealsAdapter.ViewHolder> {
 
@@ -45,7 +47,7 @@ public class BankDealsAdapter extends RecyclerView.Adapter<BankDealsAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         /* default */ final MPTextView bankDescView;
-        /* default */ final ImageView bankImageView;
+        /* default */ final SimpleDraweeView bankImageView;
         /* default */ final MPTextView installmentsView;
         /* default */ final MPTextView logoName;
 
@@ -83,19 +85,42 @@ public class BankDealsAdapter extends RecyclerView.Adapter<BankDealsAdapter.View
             bankImageView.setVisibility(View.GONE);
 
             if (bankDeal.hasPictureUrl()) {
-                ViewUtils.loadOrCallError(bankDeal.getPicture().getUrl(), bankImageView, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess() {
-                        bankImageView.setVisibility(View.VISIBLE);
-                        logoName.setVisibility(View.GONE);
-                    }
+                ViewUtils.loadOrCallError(bankDeal.getPicture().getUrl(), bankImageView,
 
-                    @Override
-                    public void onError() {
-                        logoName.setVisibility(View.VISIBLE);
-                        bankImageView.setVisibility(View.GONE);
-                    }
-                });
+                    new ControllerListener() {
+                        @Override
+                        public void onSubmit(final String id, final Object callerContext) {
+
+                        }
+
+                        @Override
+                        public void onFinalImageSet(final String id, @Nullable final Object imageInfo,
+                            @Nullable final Animatable animatable) {
+                            bankImageView.setVisibility(View.VISIBLE);
+                            logoName.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onIntermediateImageSet(final String id, @Nullable final Object imageInfo) {
+
+                        }
+
+                        @Override
+                        public void onIntermediateImageFailed(final String id, final Throwable throwable) {
+
+                        }
+
+                        @Override
+                        public void onFailure(final String id, final Throwable throwable) {
+                            logoName.setVisibility(View.VISIBLE);
+                            bankImageView.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onRelease(final String id) {
+
+                        }
+                    });
             }
         }
 

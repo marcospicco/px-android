@@ -6,7 +6,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              tools:background="@color/ui_components_success_color">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/mpsdkIconProduct"
         android:layout_width="@dimen/px_xxl_height"
         android:layout_height="@dimen/px_xxl_height"
@@ -14,7 +14,7 @@
         android:layout_margin="@dimen/px_xs_alternative_1_margin"
         tools:src="@drawable/px_icon_product"/>
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/mpsdkIconBadge"
         android:layout_width="@dimen/px_l_alternative_margin"
         android:layout_height="@dimen/px_l_alternative_margin"

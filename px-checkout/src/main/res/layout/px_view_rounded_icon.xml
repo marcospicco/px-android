@@ -5,7 +5,7 @@
              android:layout_height="@dimen/px_m_height"
              android:background="@drawable/px_light_grey_circle">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

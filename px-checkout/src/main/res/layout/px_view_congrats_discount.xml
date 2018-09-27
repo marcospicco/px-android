@@ -10,7 +10,7 @@
               android:orientation="vertical"
               android:padding="@dimen/px_m_margin">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:layout_width="@dimen/px_m_height"
         android:layout_height="@dimen/px_m_height"
         android:layout_marginBottom="@dimen/px_xs_margin"

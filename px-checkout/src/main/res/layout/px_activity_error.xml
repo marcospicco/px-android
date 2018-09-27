@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:layout_width="@dimen/px_xl_height"
             android:layout_height="@dimen/px_xl_height"
             android:layout_gravity="center_horizontal"

@@ -51,7 +51,7 @@
             app:font_style="light"
             tools:text="3x $1232,23"/>
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

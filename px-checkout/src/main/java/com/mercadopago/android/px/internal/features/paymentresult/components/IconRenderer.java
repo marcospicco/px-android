@@ -7,30 +7,26 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.features.paymentresult.props.IconProps;
-import com.mercadopago.android.px.internal.util.CircleTransform;
-import com.mercadopago.android.px.internal.util.ScaleUtil;
+import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.internal.view.Renderer;
-import com.squareup.picasso.Picasso;
 
 public class IconRenderer extends Renderer<Icon> {
 
     @Override
     public View render(@NonNull final Icon component, @NonNull final Context context,
         @Nullable final ViewGroup parent) {
-        final View iconView = inflate(R.layout.px_icon, parent);
-        final ImageView iconImageView = iconView.findViewById(R.id.mpsdkIconProduct);
-        final ImageView iconBadgeView = iconView.findViewById(R.id.mpsdkIconBadge);
 
-        final int size = ScaleUtil.getPxFromDp(90, context);
+        final View iconView = inflate(R.layout.px_icon, parent);
+        final SimpleDraweeView iconImageView = iconView.findViewById(R.id.mpsdkIconProduct);
+        final SimpleDraweeView iconBadgeView = iconView.findViewById(R.id.mpsdkIconBadge);
 
         //Render icon
         if (component.hasIconFromUrl()) {
-            renderIconFromUrl(context, component.props, size, iconImageView);
+            ViewUtils.loadIntoCircle(iconImageView, component.props.iconImage, component.props.iconUrl);
         } else {
-            renderIconFromResource(context, component.props, size, iconImageView);
+            ViewUtils.loadIntoCircle(iconImageView, component.props.iconImage);
         }
 
         //Render badge
@@ -44,29 +40,5 @@ public class IconRenderer extends Renderer<Icon> {
         }
 
         return iconView;
-    }
-
-    private void renderIconFromUrl(final Context context, final IconProps props, final int size,
-        final ImageView iconImageView) {
-        Picasso.with(context)
-            .load(props.iconUrl)
-            .transform(new CircleTransform())
-            .resize(size, size)
-            .centerInside()
-            .noFade()
-            .placeholder(props.iconImage)
-            .error(props.iconImage)
-            .into(iconImageView);
-    }
-
-    private void renderIconFromResource(final Context context, final IconProps props, final int size,
-        final ImageView iconImageView) {
-        Picasso.with(context)
-            .load(props.iconImage)
-            .transform(new CircleTransform())
-            .resize(size, size)
-            .centerInside()
-            .noFade()
-            .into(iconImageView);
     }
 }

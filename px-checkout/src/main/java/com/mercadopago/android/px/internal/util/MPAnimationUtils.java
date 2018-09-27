@@ -146,13 +146,13 @@ public class MPAnimationUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static void setImageViewColorLollipop(ImageView imageView, Context context, int color) {
-        imageView.setColorFilter(ContextCompat.getColor(context, color),
+    public static void setImageViewColorLollipop(final ImageView imageView, final int color) {
+        imageView.setColorFilter(ContextCompat.getColor(imageView.getContext(), color),
             PorterDuff.Mode.SRC_ATOP);
     }
 
-    public static void setImageViewColor(ImageView imageView, Context context, int color) {
-        imageView.setBackgroundColor(ContextCompat.getColor(context, color));
+    public static void setImageViewColor(final ImageView imageView, final int color) {
+        imageView.setBackgroundColor(ContextCompat.getColor(imageView.getContext(), color));
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

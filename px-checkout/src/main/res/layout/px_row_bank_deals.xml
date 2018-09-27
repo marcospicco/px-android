@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:minHeight="@dimen/px_promotion_logo_height">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/mpsdkBankImg"
             android:layout_width="@dimen/px_promotion_logo_width"
             android:layout_height="@dimen/px_promotion_logo_height"

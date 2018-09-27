@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/px_item_grey_circle">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/item_image"
             android:layout_width="@dimen/px_l_height"
             android:layout_height="@dimen/px_l_height"

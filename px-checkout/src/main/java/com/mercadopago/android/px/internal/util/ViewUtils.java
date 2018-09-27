@@ -2,6 +2,7 @@ package com.mercadopago.android.px.internal.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -11,10 +12,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.AbstractDraweeController;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.generic.RoundingParams;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.view.MPEditText;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import java.lang.ref.WeakReference;
 
 import static android.view.View.GONE;
 
@@ -23,29 +32,90 @@ public final class ViewUtils {
     private ViewUtils() {
     }
 
-    public static void loadOrGone(final String imgUrl, final ImageView logo) {
+    public static void loadOrGone(final String imgUrl, final SimpleDraweeView logo) {
         if (!TextUtil.isEmpty(imgUrl)) {
-            Picasso.with(logo.getContext())
-                .load(imgUrl)
-                .into(logo, new Callback.EmptyCallback() {
-                    @Override
-                    public void onError() {
-                        logo.setVisibility(GONE);
-                    }
-                });
+            final AbstractDraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(ImageRequest.fromUri(imgUrl))
+                .setControllerListener(new GoneController(logo))
+                .build();
+            logo.setController(controller);
         } else {
             logo.setVisibility(GONE);
         }
     }
 
-    public static void loadOrCallError(final String imgUrl, final ImageView logo, Callback callback) {
-        if (!TextUtil.isEmpty(imgUrl)) {
-            Picasso.with(logo.getContext())
-                .load(imgUrl)
-                .into(logo, callback);
-        } else {
-            callback.onError();
+    public static void loadIntoCircle(@NonNull final SimpleDraweeView image, final int imageResource) {
+        image.setHierarchy(new GenericDraweeHierarchyBuilder(image.getResources())
+            .setRoundingParams(RoundingParams.asCircle())
+            .build());
+
+        image.setImageResource(imageResource);
+    }
+
+    public static void loadIntoCircle(@NonNull final SimpleDraweeView image, final int errorAndHolder,
+        @NonNull final String iconUrl) {
+
+        image.setHierarchy(new GenericDraweeHierarchyBuilder(image.getResources())
+            .setRoundingParams(RoundingParams.asCircle())
+            .build());
+
+        final GenericDraweeHierarchy hierarchy = image.getHierarchy();
+        hierarchy.setFailureImage(errorAndHolder);
+        hierarchy.setPlaceholderImage(errorAndHolder);
+        image.setImageURI(iconUrl);
+    }
+
+    private static class GoneController implements ControllerListener<ImageInfo> {
+
+        @NonNull private final WeakReference<ImageView> imageView;
+
+        public GoneController(@NonNull final ImageView imageView) {
+            this.imageView = new WeakReference<>(imageView);
         }
+
+        @Override
+        public void onSubmit(final String id, final Object callerContext) {
+
+        }
+
+        @Override
+        public void onFinalImageSet(final String id, @javax.annotation.Nullable final ImageInfo imageInfo,
+            @javax.annotation.Nullable final Animatable animatable) {
+
+        }
+
+        @Override
+        public void onIntermediateImageSet(final String id, @javax.annotation.Nullable final ImageInfo imageInfo) {
+
+        }
+
+        @Override
+        public void onIntermediateImageFailed(final String id, final Throwable throwable) {
+
+        }
+
+        @Override
+        public void onFailure(final String id, final Throwable throwable) {
+            if (imageView.get() != null) {
+                imageView.get().setVisibility(GONE);
+            }
+        }
+
+        @Override
+        public void onRelease(final String id) {
+
+        }
+    }
+
+    public static void loadOrCallError(@Nullable final String imgUrl, @NonNull final SimpleDraweeView logo,
+        @NonNull final ControllerListener controllerListener) {
+
+        final AbstractDraweeController controller = Fresco.newDraweeControllerBuilder()
+            .setImageRequest(ImageRequest.fromUri(imgUrl))
+            .setControllerListener(controllerListener)
+            .build();
+
+        logo.setController(controller);
     }
 
     public static void loadOrGone(@Nullable final CharSequence text, @NonNull final TextView textView) {

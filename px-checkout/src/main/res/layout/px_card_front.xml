@@ -9,13 +9,14 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:foreground="@drawable/px_card_shadow_rounded"
+        android:padding="6dp"
         android:layout_gravity="center_horizontal">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:padding="5dp">
+            android:layout_gravity="center">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -49,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.65">
 
-                    <ImageView
+                    <com.facebook.drawee.view.SimpleDraweeView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/px_card_back_shadow"/>
@@ -84,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:visibility="visible">
 
-                        <ImageView
+                        <com.facebook.drawee.view.SimpleDraweeView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="start"
@@ -92,7 +93,7 @@
 
                     </FrameLayout>
 
-                    <ImageView
+                    <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/mpsdkImageCardContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -204,13 +205,5 @@
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
-
-        <ImageView
-            android:id="@+id/mpsdkCardShadowBorder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:src="@drawable/px_card_shadow_rounded"/>
-
     </FrameLayout>
 </FrameLayout>
