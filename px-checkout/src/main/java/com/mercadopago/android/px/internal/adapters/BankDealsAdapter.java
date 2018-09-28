@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.callbacks.OnSelectedCallback;
 import com.mercadopago.android.px.internal.util.TextUtil;
@@ -51,7 +52,7 @@ public class BankDealsAdapter extends RecyclerView.Adapter<BankDealsAdapter.View
         /* default */ final MPTextView installmentsView;
         /* default */ final MPTextView logoName;
 
-        public ViewHolder(View v) {
+        public ViewHolder(final View v) {
 
             super(v);
             bankDescView = v.findViewById(R.id.mpsdkBankDesc);
@@ -82,46 +83,42 @@ public class BankDealsAdapter extends RecyclerView.Adapter<BankDealsAdapter.View
         }
 
         private void loadBankLogo(final BankDeal bankDeal) {
-            bankImageView.setVisibility(View.GONE);
 
-            if (bankDeal.hasPictureUrl()) {
-                ViewUtils.loadOrCallError(bankDeal.getPicture().getUrl(), bankImageView,
+            ViewUtils.loadOrCallError(bankDeal.hasPictureUrl() ? bankDeal.getPicture().getUrl() : "", bankImageView,
 
-                    new ControllerListener() {
-                        @Override
-                        public void onSubmit(final String id, final Object callerContext) {
+                new ControllerListener<ImageInfo>() {
+                    @Override
+                    public void onSubmit(final String id, final Object callerContext) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onFinalImageSet(final String id, @Nullable final Object imageInfo,
-                            @Nullable final Animatable animatable) {
-                            bankImageView.setVisibility(View.VISIBLE);
-                            logoName.setVisibility(View.GONE);
-                        }
+                    @Override
+                    public void onFinalImageSet(final String id, @Nullable final ImageInfo imageInfo,
+                        @Nullable final Animatable animatable) {
+                        logoName.setVisibility(View.GONE);
+                        ViewUtils.updateViewSize(bankImageView, imageInfo);
+                    }
 
-                        @Override
-                        public void onIntermediateImageSet(final String id, @Nullable final Object imageInfo) {
+                    @Override
+                    public void onIntermediateImageSet(final String id, @Nullable final ImageInfo imageInfo) {
+                        ViewUtils.updateViewSize(bankImageView, imageInfo);
+                    }
 
-                        }
+                    @Override
+                    public void onIntermediateImageFailed(final String id, final Throwable throwable) {
 
-                        @Override
-                        public void onIntermediateImageFailed(final String id, final Throwable throwable) {
+                    }
 
-                        }
+                    @Override
+                    public void onFailure(final String id, final Throwable throwable) {
+                        logoName.setVisibility(View.VISIBLE);
+                    }
 
-                        @Override
-                        public void onFailure(final String id, final Throwable throwable) {
-                            logoName.setVisibility(View.VISIBLE);
-                            bankImageView.setVisibility(View.GONE);
-                        }
+                    @Override
+                    public void onRelease(final String id) {
 
-                        @Override
-                        public void onRelease(final String id) {
-
-                        }
-                    });
-            }
+                    }
+                });
         }
 
         private String getRecommendedMessage(BankDeal bankDeal) {

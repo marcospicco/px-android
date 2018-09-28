@@ -3,6 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/px_light_gray"
               android:orientation="vertical">
 
@@ -32,13 +33,13 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:minHeight="@dimen/px_promotion_logo_height">
+                    android:layout_gravity="center">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/logo"
                         android:layout_width="@dimen/px_promotion_logo_width"
                         android:layout_height="@dimen/px_promotion_logo_height"
+                        app:actualImageScaleType="centerCrop"
                         android:layout_gravity="center"/>
 
                     <com.mercadopago.android.px.internal.view.MPTextView

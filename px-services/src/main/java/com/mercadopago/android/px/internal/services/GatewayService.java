@@ -13,7 +13,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface    GatewayService {
+public interface GatewayService {
 
     @POST("/v1/card_tokens")
     MPCall<Token> getToken(@Query("public_key") String publicKey, @Nullable @Query("access_token") String privateKey,

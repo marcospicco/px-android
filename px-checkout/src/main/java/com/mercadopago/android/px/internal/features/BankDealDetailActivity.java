@@ -157,10 +157,12 @@ public class BankDealDetailActivity extends AppCompatActivity implements Control
     public void onFinalImageSet(final String id, @Nullable final ImageInfo imageInfo,
         @Nullable final Animatable animatable) {
         logoName.setVisibility(View.GONE);
+        ViewUtils.updateViewSize(logo, imageInfo);
     }
 
     @Override
     public void onIntermediateImageSet(final String id, @Nullable final ImageInfo imageInfo) {
+        ViewUtils.updateViewSize(logo, imageInfo);
     }
 
     @Override

@@ -1,5 +1,6 @@
 <LinearLayout android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:gravity="center_vertical"
               android:focusable="true"
@@ -21,9 +22,8 @@
             android:layout_width="@dimen/px_promotion_logo_width"
             android:layout_height="@dimen/px_promotion_logo_height"
             android:layout_gravity="center"
-            android:adjustViewBounds="true"
             android:contentDescription="@string/px_bank"
-            android:scaleType="fitCenter"/>
+            app:actualImageScaleType="centerCrop"/>
 
         <com.mercadopago.android.px.internal.view.MPTextView
             android:id="@+id/logo_name"

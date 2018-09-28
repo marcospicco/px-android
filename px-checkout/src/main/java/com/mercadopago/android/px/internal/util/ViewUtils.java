@@ -107,15 +107,24 @@ public final class ViewUtils {
         }
     }
 
-    public static void loadOrCallError(@Nullable final String imgUrl, @NonNull final SimpleDraweeView logo,
-        @NonNull final ControllerListener controllerListener) {
+    public static void loadOrCallError(@NonNull final String imgUrl, @NonNull final SimpleDraweeView logo,
+        @NonNull final ControllerListener<ImageInfo> controllerListener) {
 
         final AbstractDraweeController controller = Fresco.newDraweeControllerBuilder()
+            .setOldController(logo.getController())
             .setImageRequest(ImageRequest.fromUri(imgUrl))
             .setControllerListener(controllerListener)
             .build();
 
         logo.setController(controller);
+    }
+
+    public static void updateViewSize(@NonNull final SimpleDraweeView view, @Nullable final ImageInfo imageInfo) {
+        if (imageInfo != null) {
+            final ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            view.setAspectRatio((float) imageInfo.getWidth() / imageInfo.getHeight());
+        }
     }
 
     public static void loadOrGone(@Nullable final CharSequence text, @NonNull final TextView textView) {

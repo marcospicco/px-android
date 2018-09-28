@@ -86,10 +86,10 @@
                         android:visibility="visible">
 
                         <com.facebook.drawee.view.SimpleDraweeView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_width="52dp"
+                            android:layout_height="34dp"
                             android:layout_gravity="start"
-                            android:src="@drawable/px_base_card_image"/>
+                            app:backgroundImage="@drawable/px_base_card_image"/>
 
                     </FrameLayout>
 
