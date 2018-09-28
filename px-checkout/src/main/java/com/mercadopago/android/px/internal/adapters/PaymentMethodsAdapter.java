@@ -5,8 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
 import com.mercadopago.android.px.model.PaymentMethod;
@@ -20,7 +21,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView mPaymentMethodImage;
+        public DraweeView mPaymentMethodImage;
         public TextView mPaymentMethodName;
 
         public ViewHolder(View v, View.OnClickListener listener) {
@@ -56,8 +57,9 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         PaymentMethod paymentMethod = mData.get(position);
 
-        holder.mPaymentMethodImage
-            .setImageResource(MercadoPagoUtil.getPaymentMethodIcon(mActivity, paymentMethod.getId()));
+        FrescoImageController.create().load(MercadoPagoUtil.getPaymentMethodIcon(mActivity, paymentMethod.getId()))
+            .into(holder.mPaymentMethodImage);
+
         holder.mPaymentMethodName.setText(paymentMethod.getName());
         // Set view tag item
         holder.itemView.setTag(paymentMethod);

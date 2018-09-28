@@ -4,8 +4,9 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.view.CompactComponent;
 import javax.annotation.Nonnull;
@@ -31,8 +32,8 @@ class CollapsedItem extends CompactComponent<CollapsedItem.Props, Void> {
     public View render(@Nonnull final ViewGroup parent) {
         final View layout = inflate(parent, R.layout.px_view_onetap_item);
         final TextView itemTitle = layout.findViewById(R.id.item_title);
-        final ImageView itemImage = layout.findViewById(R.id.item_image);
-        itemImage.setImageResource(props.icon);
+        final DraweeView itemImage = layout.findViewById(R.id.item_image);
+        FrescoImageController.create().load(props.icon).into(itemImage);
         itemTitle.setText(props.itemTitle);
         return layout;
     }

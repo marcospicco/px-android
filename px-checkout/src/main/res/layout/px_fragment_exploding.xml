@@ -45,7 +45,7 @@
             tools:visibility="visible"/>
 
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/cho_loading_buy_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,6 +54,7 @@
             android:visibility="gone"
             tools:src="@drawable/px_ic_payment_success"
             tools:visibility="visible"/>
+
     </RelativeLayout>
 
     <View

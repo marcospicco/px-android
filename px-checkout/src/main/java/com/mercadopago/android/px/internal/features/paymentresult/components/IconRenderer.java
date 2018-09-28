@@ -1,13 +1,12 @@
 package com.mercadopago.android.px.internal.features.paymentresult.components;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.internal.view.Renderer;
@@ -33,9 +32,7 @@ public class IconRenderer extends Renderer<Icon> {
         if (component.props.badgeImage == 0) {
             iconBadgeView.setVisibility(View.INVISIBLE);
         } else {
-            final Drawable badgeImage = ContextCompat.getDrawable(context,
-                component.props.badgeImage);
-            iconBadgeView.setImageDrawable(badgeImage);
+            FrescoImageController.create().load(component.props.badgeImage).into(iconBadgeView);
             iconBadgeView.setVisibility(View.VISIBLE);
         }
 

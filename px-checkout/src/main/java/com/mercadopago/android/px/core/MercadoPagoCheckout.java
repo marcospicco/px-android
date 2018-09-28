@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.mercadolibre.android.ui.font.Font;
 import com.mercadopago.android.px.configuration.AdvancedConfiguration;
 import com.mercadopago.android.px.configuration.PaymentConfiguration;
@@ -74,6 +75,7 @@ public class MercadoPagoCheckout {
      * {@link Activity#onActivityResult(int, int, Intent)}
      */
     public void startPayment(@NonNull final Context context, final int requestCode) {
+        Fresco.initialize(context);
         startIntent(context, CheckoutActivity.getIntent(context), requestCode);
     }
 

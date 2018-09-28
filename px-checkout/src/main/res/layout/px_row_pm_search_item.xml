@@ -1,6 +1,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@android:color/transparent"
     android:minHeight="45dp"
@@ -23,8 +24,9 @@
                 android:id="@+id/mpsdkImage"
                 android:padding="16dp"
                 android:maxWidth="80dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:actualImageScaleType="centerInside"
                 android:layout_gravity="center"
                 tools:src="@drawable/px_bapropagos"/>
         </FrameLayout>

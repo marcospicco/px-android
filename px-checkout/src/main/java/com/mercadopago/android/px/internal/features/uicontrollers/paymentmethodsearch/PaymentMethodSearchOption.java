@@ -6,7 +6,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
@@ -22,7 +23,7 @@ public class PaymentMethodSearchOption implements PaymentMethodSearchViewControl
     protected View mView;
     protected MPTextView mDescription;
     protected MPTextView mComment;
-    protected ImageView mIcon;
+    protected DraweeView mIcon;
     protected View.OnClickListener mListener;
 
     public PaymentMethodSearchOption(Context context, PaymentMethodSearchItem item) {
@@ -87,7 +88,7 @@ public class PaymentMethodSearchOption implements PaymentMethodSearchViewControl
         }
 
         if (resourceId != 0) {
-            mIcon.setImageResource(resourceId);
+            FrescoImageController.create().load(resourceId).into(mIcon);
         } else {
             mIcon.setVisibility(View.GONE);
         }

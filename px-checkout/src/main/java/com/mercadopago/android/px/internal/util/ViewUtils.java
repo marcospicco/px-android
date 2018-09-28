@@ -2,6 +2,7 @@ package com.mercadopago.android.px.internal.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Animatable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.generic.RoundingParams;
+import com.facebook.drawee.view.DraweeView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.request.ImageRequest;
@@ -107,7 +109,7 @@ public final class ViewUtils {
         }
     }
 
-    public static void loadOrCallError(@NonNull final String imgUrl, @NonNull final SimpleDraweeView logo,
+    public static void loadOrCallError(@NonNull final String imgUrl, @NonNull final DraweeView logo,
         @NonNull final ControllerListener<ImageInfo> controllerListener) {
 
         final AbstractDraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -119,7 +121,7 @@ public final class ViewUtils {
         logo.setController(controller);
     }
 
-    public static void updateViewSize(@NonNull final SimpleDraweeView view, @Nullable final ImageInfo imageInfo) {
+    public static void updateViewSize(@NonNull final DraweeView view, @Nullable final ImageInfo imageInfo) {
         if (imageInfo != null) {
             final ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -197,10 +199,11 @@ public final class ViewUtils {
         }
     }
 
-    public static void resizeViewGroupLayoutParams(ViewGroup viewGroup, int height, int width, Context context) {
-        ViewGroup.LayoutParams params = viewGroup.getLayoutParams();
-        params.height = (int) context.getResources().getDimension(height);
-        params.width = (int) context.getResources().getDimension(width);
+    public static void resizeViewGroupLayoutParams(final ViewGroup viewGroup, final int height, final int width) {
+        final ViewGroup.LayoutParams params = viewGroup.getLayoutParams();
+        final Resources resources = viewGroup.getContext().getResources();
+        params.height = (int) resources.getDimension(height);
+        params.width = (int) resources.getDimension(width);
         viewGroup.setLayoutParams(params);
     }
 }

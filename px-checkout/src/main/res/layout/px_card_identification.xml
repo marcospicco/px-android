@@ -113,7 +113,7 @@
 
     </FrameLayout>
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/mpsdkCardShadowBorder"
         android:layout_width="@dimen/px_card_size_big_width"
         android:layout_height="@dimen/px_card_size_big_height"

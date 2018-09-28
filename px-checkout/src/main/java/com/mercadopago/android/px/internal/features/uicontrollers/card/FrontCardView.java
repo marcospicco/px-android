@@ -147,7 +147,7 @@ public class FrontCardView {
     }
 
     public void decorateCardBorder(int borderColor) {
-        GradientDrawable cardShadowRounded =
+        final GradientDrawable cardShadowRounded =
             (GradientDrawable) ContextCompat.getDrawable(mContext, R.drawable.px_card_shadow_rounded);
         cardShadowRounded.setStroke(ScaleUtil.getPxFromDp(6, mContext), borderColor);
         mCardBorder.setImageDrawable(cardShadowRounded);
@@ -383,7 +383,7 @@ public class FrontCardView {
 
     private void resizeCard(ViewGroup cardViewContainer, int cardHeight, int cardWidth,
         int cardHolderNameFontSize, int cardExpiryDateSize, int cardSecurityCodeSize) {
-        ViewUtils.resizeViewGroupLayoutParams(cardViewContainer, cardHeight, cardWidth, mContext);
+        ViewUtils.resizeViewGroupLayoutParams(cardViewContainer, cardHeight, cardWidth);
 
         mCardholderNameTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cardHolderNameFontSize);
         mCardExpiryMonthTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, cardExpiryDateSize);

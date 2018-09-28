@@ -3,8 +3,9 @@ package com.mercadopago.android.px.internal.features.onetap.components;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.repository.PluginRepository;
@@ -38,10 +39,10 @@ class MethodPlugin extends CompactComponent<MethodPlugin.Props, Void> {
         final View main = inflate(parent, R.layout.px_payment_method_plugin_compact);
         final PluginRepository pluginService = Session.getSession(parent.getContext()).getPluginRepository();
         final PaymentMethodInfo pluginInfo = pluginService.getPaymentMethodInfo(props.paymentMethodId);
-        final ImageView logo = main.findViewById(R.id.icon);
+        final DraweeView logo = main.findViewById(R.id.icon);
         final TextView name = main.findViewById(R.id.name);
         final TextView description = main.findViewById(R.id.description);
-        logo.setImageResource(pluginInfo.icon);
+        FrescoImageController.create().load(pluginInfo.icon).into(logo);
         ViewUtils.loadOrGone(pluginInfo.getName(), name);
         ViewUtils.loadOrGone(pluginInfo.getDescription(), description);
 

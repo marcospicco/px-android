@@ -15,9 +15,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.BuildConfig;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.callbacks.card.CardSecurityCodeEditTextCallback;
@@ -39,13 +40,13 @@ import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.CardInfo;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentRecovery;
-import com.mercadopago.android.px.model.Token;
-import com.mercadopago.android.px.model.exceptions.ExceptionHandler;
-import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.model.ScreenViewEvent;
-import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
+import com.mercadopago.android.px.model.Token;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.CardTokenException;
+import com.mercadopago.android.px.model.exceptions.ExceptionHandler;
+import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.tracking.internal.utils.TrackingUtil;
 
 public class SecurityCodeActivity extends MercadoPagoBaseActivity implements SecurityCodeActivityView {
 
@@ -71,7 +72,7 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
     protected MPTextView mErrorTextView;
     protected String mErrorState;
     protected FrameLayout mBackground;
-    protected ImageView mSecurityCodeCardIcon;
+    protected DraweeView mSecurityCodeCardIcon;
     protected Toolbar mToolbar;
 
     //Normal View
@@ -300,13 +301,13 @@ public class SecurityCodeActivity extends MercadoPagoBaseActivity implements Sec
 
     @Override
     public void showBackSecurityCodeCardView() {
-        mSecurityCodeCardIcon.setImageResource(R.drawable.px_tiny_card_cvv_screen);
+        FrescoImageController.create().load(R.drawable.px_tiny_card_cvv_screen).into(mSecurityCodeCardIcon);
         setSecurityCodeCardColorFilter();
     }
 
     @Override
     public void showFrontSecurityCodeCardView() {
-        mSecurityCodeCardIcon.setImageResource(R.drawable.px_amex_tiny_card_cvv_screen);
+        FrescoImageController.create().load(R.drawable.px_amex_tiny_card_cvv_screen).into(mSecurityCodeCardIcon);
         setSecurityCodeCardColorFilter();
     }
 

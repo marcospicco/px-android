@@ -82,12 +82,6 @@
             android:name=".internal.features.BankDealDetailActivity"
             android:theme="@style/Theme.MercadoPagoTheme.NoActionBar"/>
 
-        <provider
-            android:name=".core.internal.FrescoInitContentProvider"
-            android:authorities="com.mercadopago.px.internal.fresco"
-            android:enabled="true"
-            android:exported="false">
-        </provider>
     </application>
 
 </manifest>

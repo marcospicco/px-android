@@ -29,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.util.StatusBarDecorator;
 import com.mercadopago.android.px.internal.util.TextUtil;
@@ -46,7 +48,7 @@ public class ExplodingFragment extends Fragment {
 
     private ProgressBar progressBar;
     private ObjectAnimator animator;
-    private ImageView icon;
+    private DraweeView icon;
     private ImageView circle;
     private View reveal;
     private TextView text;
@@ -172,7 +174,7 @@ public class ExplodingFragment extends Fragment {
         @ColorInt
         final int color = ContextCompat.getColor(getContext(), explodeDecorator.getDarkPrimaryColor());
         circle.setColorFilter(color);
-        icon.setImageResource(explodeDecorator.getStatusIcon());
+        FrescoImageController.create().load(explodeDecorator.getStatusIcon()).into(icon);
         final int duration = getResources().getInteger(R.integer.px_long_animation_time);
         final int initialWidth = progressBar.getWidth();
         final int finalSize = progressBar.getHeight();
