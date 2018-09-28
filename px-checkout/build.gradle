@@ -7,6 +7,11 @@ android {
     defaultConfig {
         multiDexEnabled true //TODO remove
     }
+
+    lintOptions {
+        // We use fresco for Webp support API < 18
+        disable "WebpUnsupported"
+    }
 }
 
 dependencies {
