@@ -22,7 +22,7 @@ import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewAndConfirmPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewPaymentMethodsPage;
 import com.mercadopago.android.px.testcheckout.pages.SecurityCodePage;
-import com.mercadopago.android.px.testcheckout.pages.SecurityCodeToCongratsPage;
+import com.mercadopago.android.px.testcheckout.pages.SecurityCodeToResultsPage;
 import org.hamcrest.Matcher;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -131,7 +131,7 @@ public class DefaultValidator implements CheckoutValidator {
     }
 
     @Override
-    public void validate(@NonNull final SecurityCodeToCongratsPage securityCodeToCongratsPage) {
+    public void validate(@NonNull final SecurityCodeToResultsPage securityCodeToResultsPage) {
         //TODO implement default PX Validations
     }
 
