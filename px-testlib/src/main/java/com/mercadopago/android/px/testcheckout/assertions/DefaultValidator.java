@@ -3,6 +3,7 @@ package com.mercadopago.android.px.testcheckout.assertions;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
+import com.mercadopago.android.px.testcheckout.pages.CallForAuthPage;
 import com.mercadopago.android.px.testcheckout.pages.CardPage;
 import com.mercadopago.android.px.testcheckout.pages.CashPage;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
@@ -19,6 +20,8 @@ import com.mercadopago.android.px.testcheckout.pages.NamePage;
 import com.mercadopago.android.px.testcheckout.pages.NoCheckoutPage;
 import com.mercadopago.android.px.testcheckout.pages.OneTapPage;
 import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
+import com.mercadopago.android.px.testcheckout.pages.PendingPage;
+import com.mercadopago.android.px.testcheckout.pages.RejectedPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewAndConfirmPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewPaymentMethodsPage;
 import com.mercadopago.android.px.testcheckout.pages.SecurityCodePage;
@@ -137,6 +140,21 @@ public class DefaultValidator implements CheckoutValidator {
 
     @Override
     public void validate(@NonNull final OneTapPage oneTapPage) {
+        //TODO implement default PX Validations
+    }
+
+    @Override
+    public void validate(@NonNull final CallForAuthPage callForAuthPage) {
+        //TODO implement default PX Validations
+    }
+
+    @Override
+    public void validate(@NonNull final PendingPage pendingPage) {
+        //TODO implement default PX Validations
+    }
+
+    @Override
+    public void validate(@NonNull final RejectedPage rejectedPage) {
         //TODO implement default PX Validations
     }
 
