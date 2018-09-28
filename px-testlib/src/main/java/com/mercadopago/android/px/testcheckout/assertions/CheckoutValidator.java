@@ -1,6 +1,7 @@
 package com.mercadopago.android.px.testcheckout.assertions;
 
 import android.support.annotation.NonNull;
+import com.mercadopago.android.px.testcheckout.pages.CallForAuthPage;
 import com.mercadopago.android.px.testcheckout.pages.CardPage;
 import com.mercadopago.android.px.testcheckout.pages.CashPage;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
@@ -17,6 +18,8 @@ import com.mercadopago.android.px.testcheckout.pages.NamePage;
 import com.mercadopago.android.px.testcheckout.pages.NoCheckoutPage;
 import com.mercadopago.android.px.testcheckout.pages.OneTapPage;
 import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
+import com.mercadopago.android.px.testcheckout.pages.PendingPage;
+import com.mercadopago.android.px.testcheckout.pages.RejectedPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewAndConfirmPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewPaymentMethodsPage;
 import com.mercadopago.android.px.testcheckout.pages.SecurityCodePage;
@@ -64,4 +67,10 @@ public interface CheckoutValidator extends Validator {
     void validate(@NonNull final SecurityCodeToResultsPage securityCodeToResultsPage);
 
     void validate(@NonNull final OneTapPage oneTapPage);
+
+    void validate(@NonNull final CallForAuthPage callForAuthPage);
+
+    void validate(@NonNull final PendingPage pendingPage);
+
+    void validate(@NonNull final RejectedPage rejectedPage);
 }
