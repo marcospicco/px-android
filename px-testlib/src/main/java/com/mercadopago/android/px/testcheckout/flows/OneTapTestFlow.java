@@ -5,16 +5,13 @@ import android.support.annotation.NonNull;
 import com.mercadopago.android.px.core.MercadoPagoCheckout;
 import com.mercadopago.android.px.testcheckout.assertions.CheckoutValidator;
 import com.mercadopago.android.px.testcheckout.input.Card;
-import com.mercadopago.android.px.testcheckout.input.Country;
-import com.mercadopago.android.px.testcheckout.input.FakeCard;
-import com.mercadopago.android.px.testcheckout.input.Visa;
 import com.mercadopago.android.px.testcheckout.pages.CallForAuthPage;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
 import com.mercadopago.android.px.testcheckout.pages.OneTapPage;
 import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
 import com.mercadopago.android.px.testcheckout.pages.PendingPage;
 import com.mercadopago.android.px.testcheckout.pages.RejectedPage;
-import org.junit.Test;
+import com.mercadopago.android.px.testcheckout.pages.SecurityCodeToResultsPage;
 
 public class OneTapTestFlow extends TestFlow {
 
@@ -52,15 +49,14 @@ public class OneTapTestFlow extends TestFlow {
             .enterSecurityCodeToCallForAuthPage(card.escNumber());
     }
 
-    public CallForAuthPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentRetryCVVFlow(@NonNull final Card card,
+    public SecurityCodeToResultsPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentRetryCVVFlow(@NonNull final Card card,
         final CheckoutValidator validator) {
         startCheckout();
 
         return new OneTapPage(validator)
             .pressConfirmButton()
             .enterSecurityCodeToCallForAuthPage(card.escNumber())
-            .pressAlreadyAuthorizedButton()
-            .enterSecurityCodeToCallForAuthPage(card.escNumber());
+            .pressAlreadyAuthorizedButton();
     }
 
     public PaymentMethodPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentAndChangePaymentMethodFlow(
