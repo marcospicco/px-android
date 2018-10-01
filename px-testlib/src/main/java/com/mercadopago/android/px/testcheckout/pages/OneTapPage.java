@@ -15,6 +15,7 @@ public class OneTapPage extends PageObject<CheckoutValidator> {
     }
 
     public OneTapPage(final CheckoutValidator validator) {
+        super(validator);
     }
 
     public DiscountDetailPage pressOnDiscountDetail() {

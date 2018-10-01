@@ -21,7 +21,7 @@ public class OneTapTestFlow extends TestFlow {
         super(mercadoPagoCheckout, context);
     }
 
-    public CongratsPage runCardWithOneTapWithoutESCApprovedPaymentFlow(final Card card,
+    public CongratsPage runCardWithOneTapWithoutESCApprovedPaymentFlow(@NonNull final Card card,
         final CheckoutValidator validator) {
         startCheckout();
         return new OneTapPage(validator)
@@ -29,7 +29,7 @@ public class OneTapTestFlow extends TestFlow {
             .enterSecurityCodeToCongratsPage(card.escNumber());
     }
 
-    public CallForAuthPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentFlow(final Card card,
+    public CallForAuthPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentFlow(@NonNull final Card card,
         final CheckoutValidator validator) {
         startCheckout();
 
@@ -38,7 +38,7 @@ public class OneTapTestFlow extends TestFlow {
             .enterSecurityCodeToCallForAuthPage(card.escNumber());
     }
 
-    public PendingPage runSavedCardWithOneTapWithoutESCPendingPaymentFlow(final Card card,
+    public PendingPage runSavedCardWithOneTapWithoutESCPendingPaymentFlow(@NonNull final Card card,
         final CheckoutValidator validator) {
         startCheckout();
 
