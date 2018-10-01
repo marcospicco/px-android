@@ -3,16 +3,14 @@ package com.mercadopago.android.px.internal.features.uicontrollers.paymentmethod
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.features.uicontrollers.paymentmethods.PaymentMethodViewController;
-import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.PaymentMethod;
 
-/**
- * Created by mreverter on 28/6/16.
- */
 public abstract class PaymentMethodOnView implements PaymentMethodViewController {
 
     protected PaymentMethod mPaymentMethod;
@@ -20,8 +18,8 @@ public abstract class PaymentMethodOnView implements PaymentMethodViewController
     protected View mSeparator;
     protected View mView;
     protected MPTextView mDescription;
-    protected ImageView mIcon;
-    protected ImageView mEditHint;
+    protected DraweeView mIcon;
+    protected DraweeView mEditHint;
 
     @Override
     public void draw() {
@@ -32,9 +30,9 @@ public abstract class PaymentMethodOnView implements PaymentMethodViewController
                 new StringBuilder().append(mContext.getString(R.string.px_last_digits_label)).append(" ")
                     .append(getLastFourDigits()).toString());
         }
-        int resourceId = MercadoPagoUtil.getPaymentMethodIcon(mContext, mPaymentMethod.getId());
+        final int resourceId = ResourceUtil.getIconById(mContext, mPaymentMethod.getId());
         if (resourceId != 0) {
-            mIcon.setImageResource(resourceId);
+            FrescoImageController.create().load(resourceId).into(mIcon);
         } else {
             mIcon.setVisibility(View.GONE);
         }

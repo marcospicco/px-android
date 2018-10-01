@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.PaymentMethod;
 import java.util.List;
@@ -32,7 +32,7 @@ public class ReviewPaymentMethodsAdapter extends RecyclerView.Adapter<ReviewPaym
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PaymentMethod paymentMethod = mPaymentMethods.get(position);
-        int resourceId = MercadoPagoUtil.getPaymentMethodIcon(holder.itemView.getContext(), paymentMethod.getId());
+        int resourceId = ResourceUtil.getIconById(holder.itemView.getContext(), paymentMethod.getId());
         if (resourceId != 0) {
             holder.mPaymentMethodImage.setImageResource(resourceId);
         }

@@ -61,9 +61,11 @@ class MethodCard extends CompactComponent<MethodCard.Props, Void> {
             parent.getContext()
                 .getString(R.string.px_card_hint, props.card.getIssuer().getName(), props.card.getLastFourDigits());
         name.setText(cardDescription);
+
         FrescoImageController.create()
             .load(ResourceUtil.getIconResource(parent.getContext(), props.paymentMethodId))
             .into(logo);
+
         resolveCft(main);
         resolveAmount(main);
         return main;

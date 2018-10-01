@@ -5,9 +5,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.CustomSearchItem;
 
@@ -21,7 +22,7 @@ public class PaymentMethodSearchCustomOption implements PaymentMethodSearchViewC
     protected View mView;
     protected MPTextView mDescription;
     protected MPTextView mComment;
-    protected ImageView mIcon;
+    protected DraweeView mIcon;
     protected View.OnClickListener mListener;
 
     public PaymentMethodSearchCustomOption(Context context, CustomSearchItem item) {
@@ -59,11 +60,11 @@ public class PaymentMethodSearchCustomOption implements PaymentMethodSearchViewC
         int resourceId = 0;
 
         if (!TextUtils.isEmpty(mItem.getPaymentMethodId())) {
-            resourceId = MercadoPagoUtil.getPaymentMethodSearchItemIcon(mContext, mItem.getPaymentMethodId());
+            resourceId = ResourceUtil.getIconById(mContext, mItem.getPaymentMethodId());
         }
 
         if (resourceId != 0) {
-            mIcon.setImageResource(resourceId);
+            FrescoImageController.create().load(resourceId).into(mIcon);
         } else {
             mIcon.setVisibility(View.GONE);
         }

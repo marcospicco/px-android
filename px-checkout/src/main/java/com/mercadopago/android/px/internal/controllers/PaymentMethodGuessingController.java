@@ -1,7 +1,7 @@
 package com.mercadopago.android.px.internal.controllers;
 
 import android.support.annotation.Nullable;
-import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.model.CardInformation;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentTypes;
@@ -69,8 +69,7 @@ public class PaymentMethodGuessingController {
             return mGuessedPaymentMethods;
         }
         saveBin(bin);
-        mGuessedPaymentMethods = MercadoPagoUtil
-            .getValidPaymentMethodsForBin(mSavedBin, mAllPaymentMethods);
+        mGuessedPaymentMethods = ResourceUtil.getValidPaymentMethodsForBin(mSavedBin, mAllPaymentMethods);
         mGuessedPaymentMethods = getValidPaymentMethodForType(mPaymentTypeId, mGuessedPaymentMethods);
         if (mGuessedPaymentMethods.size() > 1) {
             mGuessedPaymentMethods = filterByPaymentType(mExcludedPaymentTypes, mGuessedPaymentMethods);

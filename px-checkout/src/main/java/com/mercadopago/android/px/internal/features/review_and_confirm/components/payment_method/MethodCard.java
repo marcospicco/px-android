@@ -5,8 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.features.review_and_confirm.models.PaymentModel;
 import com.mercadopago.android.px.internal.util.ResourceUtil;
@@ -14,16 +15,16 @@ import com.mercadopago.android.px.internal.util.TextUtil;
 import com.mercadopago.android.px.internal.view.CompactComponent;
 import java.util.Locale;
 
-class MethodCard extends CompactComponent<MethodCard.Props, Void> {
+/* default */ class MethodCard extends CompactComponent<MethodCard.Props, Void> {
 
     static class Props {
 
-        private final String id;
-        private final String cardName;
-        private final String lastFourDigits;
-        private final String bankName;
+        /* default */ final String id;
+        /* default */ final String cardName;
+        /* default */ final String lastFourDigits;
+        /* default */ final String bankName;
 
-        Props(String id,
+        /* default */ Props(String id,
             String cardName,
             String lastFourDigits,
             String bankName) {
@@ -33,6 +34,7 @@ class MethodCard extends CompactComponent<MethodCard.Props, Void> {
             this.bankName = bankName;
         }
 
+        /* default */
         static Props createFrom(final PaymentModel props) {
             return new Props(props.paymentMethodId,
                 props.paymentMethodName,
@@ -48,18 +50,21 @@ class MethodCard extends CompactComponent<MethodCard.Props, Void> {
     @Override
     public View render(@NonNull final ViewGroup parent) {
 
-        View paymentView = inflate(parent, R.layout.px_payment_method_card);
+        final View paymentView = inflate(parent, R.layout.px_payment_method_card);
 
-        TextView title = paymentView.findViewById(R.id.title);
+        final TextView title = paymentView.findViewById(R.id.title);
         title.setText(formatTitle(title.getContext()));
 
-        TextView subtitle = paymentView.findViewById(R.id.subtitle);
+        final TextView subtitle = paymentView.findViewById(R.id.subtitle);
         subtitle.setText(props.bankName);
 
         subtitle.setVisibility(shouldShowSubtitle() ? View.VISIBLE : View.GONE);
 
-        ImageView imageView = paymentView.findViewById(R.id.icon);
-        imageView.setImageResource(ResourceUtil.getIconResource(imageView.getContext(), props.id));
+        final DraweeView imageView = paymentView.findViewById(R.id.icon);
+        FrescoImageController.create()
+            .load(ResourceUtil.getIconResource(imageView.getContext(), props.id))
+            .into(imageView);
+
 
         return paymentView;
     }
@@ -69,8 +74,8 @@ class MethodCard extends CompactComponent<MethodCard.Props, Void> {
         return TextUtil.isNotEmpty(props.bankName) && !props.bankName.equals(props.cardName);
     }
 
-    private String formatTitle(Context context) {
-        String ending = context.getString(R.string.px_ending_in);
+    private String formatTitle(final Context context) {
+        final String ending = context.getString(R.string.px_ending_in);
         return String.format(Locale.getDefault(), "%s %s %s",
             props.cardName,
             ending,

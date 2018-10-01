@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.Issuer;
 
@@ -15,14 +17,14 @@ import com.mercadopago.android.px.model.Issuer;
 
 public class IssuersView implements IssuersViewController {
 
-    public static final String CARD_IMAGE_PREFIX = "px_issuer_";
+
 
     private final Context mContext;
     private View mView;
-    private ImageView mIssuerImageView;
+    private DraweeView mIssuerImageView;
     private MPTextView mIssuerTextView;
 
-    public IssuersView(Context context) {
+    public IssuersView(final Context context) {
         mContext = context;
     }
 
@@ -33,7 +35,7 @@ public class IssuersView implements IssuersViewController {
     }
 
     @Override
-    public View inflateInParent(ViewGroup parent, boolean attachToRoot) {
+    public View inflateInParent(final ViewGroup parent, final boolean attachToRoot) {
         mView = LayoutInflater.from(mContext)
             .inflate(R.layout.px_view_issuer, parent, attachToRoot);
         return mView;
@@ -45,13 +47,13 @@ public class IssuersView implements IssuersViewController {
     }
 
     @Override
-    public void setOnClickListener(View.OnClickListener listener) {
+    public void setOnClickListener(final View.OnClickListener listener) {
         mView.setOnClickListener(listener);
     }
 
     @Override
-    public void drawIssuer(Issuer issuer) {
-        int image = getCardImage(issuer);
+    public void drawIssuer(final Issuer issuer) {
+        final int image = ResourceUtil.getCardImage(mContext, issuer);
         if (image == 0) {
             mIssuerImageView.setVisibility(View.GONE);
             mIssuerTextView.setVisibility(View.VISIBLE);
@@ -59,12 +61,7 @@ public class IssuersView implements IssuersViewController {
         } else {
             mIssuerImageView.setVisibility(View.VISIBLE);
             mIssuerTextView.setVisibility(View.GONE);
-            mIssuerImageView.setImageResource(getCardImage(issuer));
+            FrescoImageController.create().load(image).into(mIssuerImageView);
         }
-    }
-
-    private int getCardImage(Issuer issuer) {
-        String imageName = CARD_IMAGE_PREFIX + String.valueOf(issuer.getId());
-        return mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName());
     }
 }

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.view.MPTextView;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.PaymentMethodSearchItem;
@@ -23,15 +24,15 @@ public class PaymentMethodOffEditableRow implements PaymentMethodViewController 
     private View mView;
     private MPTextView mDescription;
     private MPTextView mComment;
-    private ImageView mIcon;
+    private DraweeView mIcon;
     private View mEditHint;
 
-    public PaymentMethodOffEditableRow(Context context, PaymentMethodSearchItem item) {
+    public PaymentMethodOffEditableRow(final Context context, final PaymentMethodSearchItem item) {
         mContext = context;
         mItem = item;
     }
 
-    public PaymentMethodOffEditableRow(Context context, PaymentMethod paymentMethod) {
+    public PaymentMethodOffEditableRow(final Context context, final PaymentMethod paymentMethod) {
         mContext = context;
         mPaymentMethod = paymentMethod;
     }
@@ -51,13 +52,13 @@ public class PaymentMethodOffEditableRow implements PaymentMethodViewController 
             mComment.setVisibility(View.GONE);
         } else {
             mComment
-                .setText(MercadoPagoUtil.getAccreditationTimeMessage(mContext, mPaymentMethod.getAccreditationTime()));
+                .setText(ResourceUtil.getAccreditationTimeMessage(mContext, mPaymentMethod.getAccreditationTime()));
         }
 
-        int resourceId = MercadoPagoUtil.getPaymentMethodIcon(mContext, mPaymentMethod.getId());
+        final int resourceId = ResourceUtil.getIconById(mContext, mPaymentMethod.getId());
 
         if (resourceId != 0) {
-            mIcon.setImageResource(resourceId);
+            FrescoImageController.create().load(resourceId).into(mIcon);
         } else {
             mIcon.setVisibility(View.GONE);
         }
@@ -73,11 +74,11 @@ public class PaymentMethodOffEditableRow implements PaymentMethodViewController 
         int resourceId = 0;
 
         if (mItem.isIconRecommended()) {
-            resourceId = MercadoPagoUtil.getPaymentMethodSearchItemIcon(mContext, mItem.getId());
+            resourceId = ResourceUtil.getIconById(mContext, mItem.getId());
         }
 
         if (resourceId != 0) {
-            mIcon.setImageResource(resourceId);
+            FrescoImageController.create().load(resourceId).into(mIcon);
         } else {
             mIcon.setVisibility(View.GONE);
         }
@@ -102,7 +103,7 @@ public class PaymentMethodOffEditableRow implements PaymentMethodViewController 
     }
 
     @Override
-    public View inflateInParent(ViewGroup parent, boolean attachToRoot) {
+    public View inflateInParent(final ViewGroup parent, final boolean attachToRoot) {
         mView = LayoutInflater.from(mContext)
             .inflate(R.layout.px_row_payment_method_edit_large, parent, attachToRoot);
         return mView;

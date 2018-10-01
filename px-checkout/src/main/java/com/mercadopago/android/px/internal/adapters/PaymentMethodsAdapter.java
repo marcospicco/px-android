@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.DraweeView;
 import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.util.MercadoPagoUtil;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.model.PaymentMethod;
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class PaymentMethodsAdapter extends RecyclerView.Adapter<PaymentMethodsAd
 
         PaymentMethod paymentMethod = mData.get(position);
 
-        FrescoImageController.create().load(MercadoPagoUtil.getPaymentMethodIcon(mActivity, paymentMethod.getId()))
+        FrescoImageController.create().load(ResourceUtil.getIconById(mActivity, paymentMethod.getId()))
             .into(holder.mPaymentMethodImage);
 
         holder.mPaymentMethodName.setText(paymentMethod.getName());

@@ -14,10 +14,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.facebook.drawee.view.DraweeView;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.util.MPAnimationUtils;
 import com.mercadopago.android.px.internal.util.MPCardMaskUtil;
 import com.mercadopago.android.px.internal.util.MPCardUIUtils;
+import com.mercadopago.android.px.internal.util.ResourceUtil;
 import com.mercadopago.android.px.internal.util.ScaleUtil;
 import com.mercadopago.android.px.internal.util.ViewUtils;
 import com.mercadopago.android.px.internal.view.MPTextView;
@@ -68,7 +71,7 @@ public class FrontCardView {
     private MPTextView mCardDateDividerTextView;
     private MPTextView mCardSecurityCodeTextView;
     private FrameLayout mBaseImageCard;
-    private ImageView mImageCardContainer;
+    private DraweeView mImageCardContainer;
     private ImageView mCardLowApiImageView;
     private ImageView mCardLollipopImageView;
     private Animation mAnimFadeIn;
@@ -265,7 +268,7 @@ public class FrontCardView {
         setFontColor(fontColor, mCardExpiryYearTextView);
         setFontColor(fontColor, mCardSecurityCodeTextView);
         enableEditingFontColor(mCardNumberTextView);
-        transitionImage(getCardImage(mPaymentMethod), true);
+        transitionImage(ResourceUtil.getCardImage(mContext, mPaymentMethod), true);
     }
 
     public void fillCardHolderName(String cardholderName) {
@@ -334,28 +337,23 @@ public class FrontCardView {
         }
     }
 
-    private void setCardImage(int image) {
-        transitionImage(image, false);
-    }
-
-    private void setFontColor(int color, TextView textView) {
+    private void setFontColor(final int color, final TextView textView) {
         textView.setTextColor(ContextCompat.getColor(mContext, color));
     }
 
-    private void transitionImage(int image, boolean animate) {
+    private void transitionImage(final int image, final boolean animate) {
         mBaseImageCard.clearAnimation();
         mImageCardContainer.clearAnimation();
         mBaseImageCard.setVisibility(View.INVISIBLE);
-        mImageCardContainer.setImageResource(image);
+
+        FrescoImageController.create()
+            .load(image)
+            .into(mImageCardContainer);
+
         mImageCardContainer.setVisibility(View.VISIBLE);
         if (animate) {
             mImageCardContainer.startAnimation(mAnimFadeIn);
         }
-    }
-
-    private int getCardImage(PaymentMethod paymentMethod) {
-        String imageName = "px_ico_card_" + paymentMethod.getId().toLowerCase();
-        return mContext.getResources().getIdentifier(imageName, "drawable", mContext.getPackageName());
     }
 
     private void resize() {
@@ -422,7 +420,7 @@ public class FrontCardView {
             return;
         }
         setCardColor(MPCardUIUtils.getCardColor(mPaymentMethod, mContext));
-        setCardImage(getCardImage(mPaymentMethod));
+        transitionImage(ResourceUtil.getCardImage(mContext, mPaymentMethod), false);
         final int fontColor = MPCardUIUtils.getCardFontColor(mPaymentMethod, mContext);
         setFontColor(fontColor, mCardNumberTextView);
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.mercadolibre.android.ui.utils.facebook.fresco.FrescoImageController;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.model.PaymentMethod;
 import com.mercadopago.android.px.model.Token;
@@ -40,6 +41,6 @@ public class PaymentMethodOnEditableRow extends PaymentMethodOnView {
     @Override
     public void draw() {
         super.draw();
-        mEditHint.setImageResource(R.drawable.px_arrow_right_grey);
+        FrescoImageController.create().load(R.drawable.px_arrow_right_grey).into(mEditHint);
     }
 }
