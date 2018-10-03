@@ -49,7 +49,8 @@ public class OneTapTestFlow extends TestFlow {
             .enterSecurityCodeToCallForAuthPage(card.escNumber());
     }
 
-    public SecurityCodeToResultsPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentRetryCVVFlow(@NonNull final Card card,
+    public SecurityCodeToResultsPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentRetryCVVFlow(
+        @NonNull final Card card,
         final CheckoutValidator validator) {
         startCheckout();
 
@@ -88,7 +89,7 @@ public class OneTapTestFlow extends TestFlow {
             runSavedCardWithOneTapWithoutESCCallForAuthPaymentAndChangePaymentMethodFlow(card, validator);
 
         return new CreditCardTestFlow(checkout, context)
-            .runCreditCardWhenSavedCardPresentPaymentFlowWithInstallmentsFromPaymentMethodPage(paymentMethodPage, card,
+            .runCreditCardPaymentFlowWithInstallmentsFromOneTapSavedCard(paymentMethodPage, card,
                 CreditCardTestFlow.NO_INSTALLMENTS_OPTION);
     }
 

@@ -31,36 +31,24 @@ public class CreditCardTestFlow extends TestFlow {
         final CheckoutValidator validator) {
         startCheckout();
 
-        return runCreditCardPaymentFlowWithInstallmentsFromPaymentMethodPage(new PaymentMethodPage(validator), card,
-            installmentsOption);
-    }
-
-    @NonNull
-    public CongratsPage runCreditCardPaymentFlowWithInstallmentsFromPaymentMethodPage(
-        @NonNull PaymentMethodPage paymentMethodPage, @NonNull final Card card, final int installmentsOption) {
-
-        final CardPage cardPage = paymentMethodPage
-            .selectCard();
-
-        return runCreditCardPaymentFlowWithInstallmentsFromCardPage(cardPage, card, installmentsOption);
-    }
-
-    @NonNull
-    public CongratsPage runCreditCardWhenSavedCardPresentPaymentFlowWithInstallmentsFromPaymentMethodPage(
-        @NonNull PaymentMethodPage paymentMethodPage, @NonNull final Card card, final int installmentsOption) {
-
-        final CardPage cardPage = paymentMethodPage
-            .selectCardWhenSavedPresent();
-
-        return runCreditCardPaymentFlowWithInstallmentsFromCardPage(cardPage, card, installmentsOption);
-    }
-
-    @NonNull
-    public CongratsPage runCreditCardPaymentFlowWithInstallmentsFromCardPage(
-        @NonNull CardPage cardPage, @NonNull final Card card, final int installmentsOption) {
-
-        return cardPage
+        return new PaymentMethodPage(validator)
+            .selectCard()
             .selectCreditCard()
+            .enterCreditCardNumber(card.cardNumber())
+            .enterCardholderName(card.cardHolderName())
+            .enterExpiryDate(card.expDate())
+            .enterSecurityCode(card.escNumber())
+            .enterIdentificationNumberToInstallments(card.cardHolderIdentityNumber())
+            .selectInstallments(installmentsOption)
+            .pressConfirmButton();
+    }
+
+    @NonNull
+    public CongratsPage runCreditCardPaymentFlowWithInstallmentsFromOneTapSavedCard(
+        @NonNull PaymentMethodPage paymentMethodPage, @NonNull final Card card, final int installmentsOption) {
+
+        return paymentMethodPage
+            .selectCardWhenSavedPresent()
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
