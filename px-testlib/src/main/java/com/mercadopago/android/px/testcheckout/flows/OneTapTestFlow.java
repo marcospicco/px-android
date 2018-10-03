@@ -7,6 +7,7 @@ import com.mercadopago.android.px.testcheckout.assertions.CheckoutValidator;
 import com.mercadopago.android.px.testcheckout.input.Card;
 import com.mercadopago.android.px.testcheckout.pages.CallForAuthPage;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
+import com.mercadopago.android.px.testcheckout.pages.NoCheckoutPage;
 import com.mercadopago.android.px.testcheckout.pages.OneTapPage;
 import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
 import com.mercadopago.android.px.testcheckout.pages.PendingPage;
@@ -93,17 +94,27 @@ public class OneTapTestFlow extends TestFlow {
                 CreditCardTestFlow.NO_INSTALLMENTS_OPTION);
     }
 
-    //TODO
-    public PaymentMethodPage runSavedCardWithOneTapWithoutESCCallForAuthCancelPaymentAndGetOutFlow(
+    public NoCheckoutPage runSavedCardWithOneTapWithoutESCCallForAuthCancelPaymentAndGetOutFlow(
         @NonNull final Card card,
         final CheckoutValidator validator) {
         startCheckout();
 
-        return null;
+        return new OneTapPage(validator)
+            .pressConfirmButton()
+            .enterSecurityCodeToCallForAuthPage(card.escNumber())
+            .pressCancelButton();
     }
 
     //TODO
     public CongratsPage runSavedCardWithOneTapWithESCApprovedPaymentFlow(final Card card,
+        final CheckoutValidator validator) {
+        startCheckout();
+
+        return new CongratsPage(validator);
+    }
+
+    //TODO
+    public CongratsPage runSavedCardWithOneTapWithESCPendingPaymentFlow(final Card card,
         final CheckoutValidator validator) {
         startCheckout();
 

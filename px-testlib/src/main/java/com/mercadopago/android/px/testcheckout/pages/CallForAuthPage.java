@@ -34,4 +34,9 @@ public class CallForAuthPage extends PageObject<CheckoutValidator> {
         validator.validate(this);
         return this;
     }
+
+    public NoCheckoutPage pressCancelButton() {
+        onView(withId(R.id.px_button_secondary)).perform(scrollTo(), click());
+        return new NoCheckoutPage(validator);
+    }
 }
