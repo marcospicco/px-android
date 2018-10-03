@@ -104,36 +104,4 @@ public class OneTapTestFlow extends TestFlow {
             .enterSecurityCodeToCallForAuthPage(card.escNumber())
             .pressCancelButton();
     }
-
-    //TODO
-    public CongratsPage runSavedCardWithOneTapWithESCApprovedPaymentFlow(final Card card,
-        final CheckoutValidator validator) {
-        startCheckout();
-
-        return new CongratsPage(validator);
-    }
-
-    //TODO
-    public CongratsPage runSavedCardWithOneTapWithESCPendingPaymentFlow(final Card card,
-        final CheckoutValidator validator) {
-        startCheckout();
-
-        return new CongratsPage(validator);
-    }
-
-    //TODO
-    public CongratsPage runAccountMoneyWithOneTapApprovedPaymentFlow(final Card card,
-        final CheckoutValidator validator) {
-        startCheckout();
-
-        return new CongratsPage(validator);
-    }
-
-    //TODO
-    public RejectedPage runAccountMoneyWithOneTapRejectedPaymentFlow(final Card card,
-        final CheckoutValidator validator) {
-        startCheckout();
-
-        return new RejectedPage(validator);
-    }
 }
