@@ -8,6 +8,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class CallForAuthPage extends PageObject<CheckoutValidator> {
 
@@ -36,7 +37,7 @@ public class CallForAuthPage extends PageObject<CheckoutValidator> {
     }
 
     public NoCheckoutPage pressCancelButton() {
-        onView(withId(R.id.px_button_secondary)).perform(scrollTo(), click());
+        onView(withText(R.string.px_cancel_payment)).perform(scrollTo(), click());
         return new NoCheckoutPage(validator);
     }
 }
