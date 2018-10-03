@@ -32,6 +32,12 @@ public class PaymentMethodPage extends PageObject<CheckoutValidator> {
         return new CardPage(validator);
     }
 
+    public CardPage selectCardWhenSavedPresent() {
+        onView(withId(R.id.mpsdkGroupsList))
+            .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+        return new CardPage(validator);
+    }
+
     public CashPage selectCash() {
         onView(withId(R.id.mpsdkGroupsList))
             .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));

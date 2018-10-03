@@ -88,7 +88,7 @@ public class OneTapTestFlow extends TestFlow {
             runSavedCardWithOneTapWithoutESCCallForAuthPaymentAndChangePaymentMethodFlow(card, validator);
 
         return new CreditCardTestFlow(checkout, context)
-            .runCreditCardPaymentFlowWithInstallmentsFromPaymentMethodPage(paymentMethodPage, card,
+            .runCreditCardWhenSavedCardPresentPaymentFlowWithInstallmentsFromPaymentMethodPage(paymentMethodPage, card,
                 CreditCardTestFlow.NO_INSTALLMENTS_OPTION);
     }
 

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.mercadopago.android.px.core.MercadoPagoCheckout;
 import com.mercadopago.android.px.testcheckout.assertions.CheckoutValidator;
 import com.mercadopago.android.px.testcheckout.input.Card;
+import com.mercadopago.android.px.testcheckout.pages.CardPage;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
 import com.mercadopago.android.px.testcheckout.pages.CreditCardPage;
 import com.mercadopago.android.px.testcheckout.pages.NamePage;
@@ -38,7 +39,27 @@ public class CreditCardTestFlow extends TestFlow {
     public CongratsPage runCreditCardPaymentFlowWithInstallmentsFromPaymentMethodPage(
         @NonNull PaymentMethodPage paymentMethodPage, @NonNull final Card card, final int installmentsOption) {
 
-        return paymentMethodPage.selectCard()
+        final CardPage cardPage = paymentMethodPage
+            .selectCard();
+
+        return runCreditCardPaymentFlowWithInstallmentsFromCardPage(cardPage, card, installmentsOption);
+    }
+
+    @NonNull
+    public CongratsPage runCreditCardWhenSavedCardPresentPaymentFlowWithInstallmentsFromPaymentMethodPage(
+        @NonNull PaymentMethodPage paymentMethodPage, @NonNull final Card card, final int installmentsOption) {
+
+        final CardPage cardPage = paymentMethodPage
+            .selectCardWhenSavedPresent();
+
+        return runCreditCardPaymentFlowWithInstallmentsFromCardPage(cardPage, card, installmentsOption);
+    }
+
+    @NonNull
+    public CongratsPage runCreditCardPaymentFlowWithInstallmentsFromCardPage(
+        @NonNull CardPage cardPage, @NonNull final Card card, final int installmentsOption) {
+
+        return cardPage
             .selectCreditCard()
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
