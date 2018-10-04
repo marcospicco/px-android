@@ -17,8 +17,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 public class SecurityCodePage extends PageObject<CheckoutValidator> {
 
-    private static final String FAKE_CVV_CREDIT_CARD = "123";
-
     public SecurityCodePage() {
     }
 
@@ -63,8 +61,4 @@ public class SecurityCodePage extends PageObject<CheckoutValidator> {
         return new ExpiryDatePage(validator);
     }
 
-    //Payer access token 1 = "APP_USR-1505-080815-c6ea450de1bf828e39add499237d727f-312667294"
-//    public void enterVisaCreditCardCVV() {
-//        enterSecurityCodeForSavedCard(FAKE_CVV_CREDIT_CARD).selectInstallments(1);
-//    }
 }

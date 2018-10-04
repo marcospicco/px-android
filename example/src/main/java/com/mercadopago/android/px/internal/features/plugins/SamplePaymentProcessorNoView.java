@@ -18,7 +18,7 @@ public class SamplePaymentProcessorNoView implements PaymentProcessor {
     private static final int CONSTANT_DELAY_MILLIS = 20000;
     private static final long FAKE_LOADING_TIME = 3000;
     private final IPayment iPayment;
-//    private final Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     public SamplePaymentProcessorNoView(final IPayment iPayment) {
         this.iPayment = iPayment;
@@ -31,17 +31,17 @@ public class SamplePaymentProcessorNoView implements PaymentProcessor {
     @Override
     public void startPayment(@NonNull final CheckoutData data, @NonNull final Context context,
         @NonNull final OnPaymentListener paymentListener) {
-        //This will never be called because shouldShowFragmentOnPayment is hardcoded
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
+//        This will never be called because shouldShowFragmentOnPayment is hardcoded
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 if (iPayment instanceof BusinessPayment) {
                     paymentListener.onPaymentFinished((BusinessPayment) iPayment);
                 } else if (iPayment instanceof GenericPayment) {
                     paymentListener.onPaymentFinished((GenericPayment) iPayment);
                 }
-//            }
-//        }, FAKE_LOADING_TIME);
+            }
+        }, FAKE_LOADING_TIME);
     }
 
     @Override

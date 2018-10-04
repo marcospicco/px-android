@@ -48,23 +48,23 @@ public class SavedCardTest {
         CongratsPage congratsPageSavedCard = savedCardTestFlow.runInvalidDefaultCardIdPaymentFlow();
         assertNotNull(congratsPageSavedCard);
     }
-
-    @Test
-    public void whenSavedCardThenCompletePayment() {
-        final CheckoutPreference checkoutPreference =
-            OneTapSamples.getCheckoutPreferenceWithPayerEmail(120);
-        final GenericPayment payment = new GenericPayment(123L,
-            Payment.StatusCodes.STATUS_APPROVED,
-            Payment.StatusDetail.STATUS_DETAIL_ACCREDITED);
-        final PaymentConfiguration paymentConfiguration =
-            new PaymentConfiguration.Builder(new SamplePaymentProcessorNoView(payment)).build();
-        final MercadoPagoCheckout checkout = new MercadoPagoCheckout.Builder(OneTapSamples.ONE_TAP_MERCHANT_PUBLIC_KEY,
-            checkoutPreference, paymentConfiguration).setPrivateKey(SavedCardTestFlow.PAYER_WITH_CARDS_ACCESS_TOKEN)
-            .build();
-
-        final CongratsPage congratsPage =
-            new SavedCardTestFlow(checkout,
-                InstrumentationRegistry.getInstrumentation().getTargetContext()).runVisaSavedCardFlow();
-        assertNotNull(congratsPage);
-    }
+//
+//    @Test
+//    public void whenSavedCardThenCompletePayment() {
+//        final CheckoutPreference checkoutPreference =
+//            OneTapSamples.getCheckoutPreferenceWithPayerEmail(120);
+//        final GenericPayment payment = new GenericPayment(123L,
+//            Payment.StatusCodes.STATUS_APPROVED,
+//            Payment.StatusDetail.STATUS_DETAIL_ACCREDITED);
+//        final PaymentConfiguration paymentConfiguration =
+//            new PaymentConfiguration.Builder(new SamplePaymentProcessorNoView(payment)).build();
+//        final MercadoPagoCheckout checkout = new MercadoPagoCheckout.Builder(OneTapSamples.ONE_TAP_MERCHANT_PUBLIC_KEY,
+//            checkoutPreference, paymentConfiguration).setPrivateKey(SavedCardTestFlow.PAYER_WITH_CARDS_ACCESS_TOKEN)
+//            .build();
+//
+//        final CongratsPage congratsPage =
+//            new SavedCardTestFlow(checkout,
+//                InstrumentationRegistry.getInstrumentation().getTargetContext()).runVisaSavedCardFlow();
+//        assertNotNull(congratsPage);
+//    }
 }
