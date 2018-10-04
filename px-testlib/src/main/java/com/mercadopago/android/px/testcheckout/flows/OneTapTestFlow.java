@@ -91,4 +91,18 @@ public class OneTapTestFlow extends TestFlow {
             .enterSecurityCodeToCallForAuthPage(card.escNumber())
             .pressCancelButton();
     }
+
+    public CongratsPage runAccountMoneyWithOneTapApprovedPaymentFlow(final CheckoutValidator validator) {
+        startCheckout();
+
+        return new OneTapPage(validator)
+            .pressConfirmButtonToCongratsPage();
+    }
+
+    public RejectedPage runAccountMoneyWithOneTapRejectedPaymentFlow(final CheckoutValidator validator) {
+        startCheckout();
+
+        return new OneTapPage(validator)
+            .pressConfirmButtonToRejectedPage();
+    }
 }
