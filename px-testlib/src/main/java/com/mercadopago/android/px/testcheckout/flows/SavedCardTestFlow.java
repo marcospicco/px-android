@@ -16,7 +16,6 @@ import com.mercadopago.android.px.preferences.CheckoutPreference;
 import com.mercadopago.android.px.testcheckout.input.Card;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
 import com.mercadopago.android.px.testcheckout.pages.DebitCardPage;
-import com.mercadopago.android.px.testcheckout.pages.InstallmentsPage;
 import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewAndConfirmPage;
 import com.mercadopago.android.px.testcheckout.pages.SecurityCodePage;
@@ -27,9 +26,11 @@ public class SavedCardTestFlow extends TestFlow {
 
     private static final String PUBLIC_KEY = "APP_USR-648a260d-6fd9-4ad7-9284-90f22262c18d";
     private static final String CVV_NUMBER = "123";
-    public static final String PAYER_WITH_CARDS_ACCESS_TOKEN =
+    public static final String PAYER_1_WITH_CARDS_ACCESS_TOKEN =
         "APP_USR-1505-080815-c6ea450de1bf828e39add499237d727f-312667294";
-    private String payerWithCardAccessToken = PAYER_WITH_CARDS_ACCESS_TOKEN;
+    public static final String PAYER_1_CARD_VISA_ID = "279999120";
+    public static final String PAYER_1_CARD_VISA_LAST_FOUR = "5678";
+    private String payerWithCardAccessToken = PAYER_1_WITH_CARDS_ACCESS_TOKEN;
     private String cardId;
     private String paymentMethodId;
     private String paymentTypeId;
@@ -71,21 +72,33 @@ public class SavedCardTestFlow extends TestFlow {
         return new ReviewAndConfirmPage().pressConfirmButton();
     }
 
-    public CongratsPage runVisaSavedCardFlow() {
+    public CongratsPage runSavedCardFlowWithoutEsc(@NonNull final String lastFourDigits) {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         startCheckout();
-        //Payer access token 1 = "APP_USR-1505-080815-c6ea450de1bf828e39add499237d727f-312667294"
-        //Card id = 279999120
-        return new PaymentMethodPage(null).selectVisaCreditCardWithoutEsc("5678")
-//            .enterSecurityCodeForSavedCard(CVV_NUMBER)
+
+        return new PaymentMethodPage(null).selectVisaCreditCardWithoutEsc(lastFourDigits)
             .selectInstallmentsForSavedCard(1)
             .enterSecurityCodeForSavedCard(CVV_NUMBER)
             .pressConfirmButton();
     }
+
+    public CongratsPage runSavedCardFlowWithEsc(@NonNull final String lastFourDigits) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        startCheckout();
+
+        return new PaymentMethodPage(null).selectVisaCreditCardWithoutEsc(lastFourDigits)
+            .selectInstallmentsForSavedCardWithEsc(1)
+            .pressConfirmButton();
+    }
+
 
     public CongratsPage runNewCardPaymentFlow(@NonNull final Card card) {
         try {

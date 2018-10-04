@@ -55,6 +55,16 @@ public class InstallmentsPage extends PageObject<CheckoutValidator> {
         return new SecurityCodePage(validator);
     }
 
+    public ReviewAndConfirmPage selectInstallmentsForSavedCardWithEsc(int installmentsOption) {
+
+        Matcher<View> InstallmentsRecyclerViewMatcher = withId(R.id.mpsdkActivityInstallmentsView);
+
+        onView(InstallmentsRecyclerViewMatcher)
+            .perform(RecyclerViewActions.actionOnItemAtPosition(installmentsOption, click()));
+
+        return new ReviewAndConfirmPage(validator);
+    }
+
     public DiscountDetailPage pressOnDiscountDetail() {
         onView(withId(R.id.amount_view)).perform(click());
         return new DiscountDetailPage(validator);
