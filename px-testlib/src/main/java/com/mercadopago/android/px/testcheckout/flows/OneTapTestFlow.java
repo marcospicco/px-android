@@ -81,19 +81,6 @@ public class OneTapTestFlow extends TestFlow {
             .pressBack();
     }
 
-    public CongratsPage runSavedCardWithOneTapWithoutESCCallForAuthPaymentChangePaymentMethodAndCardPaymentGetCongratsFlow(
-        @NonNull final Card card,
-        final CheckoutValidator validator) {
-        startCheckout();
-
-        final PaymentMethodPage paymentMethodPage =
-            runSavedCardWithOneTapWithoutESCCallForAuthPaymentAndChangePaymentMethodFlow(card, validator);
-
-        return new CreditCardTestFlow(checkout, context)
-            .runCreditCardPaymentFlowWithInstallmentsFromOneTapSavedCard(paymentMethodPage, card,
-                CreditCardTestFlow.NO_INSTALLMENTS_OPTION);
-    }
-
     public NoCheckoutPage runSavedCardWithOneTapWithoutESCCallForAuthCancelPaymentAndGetOutFlow(
         @NonNull final Card card,
         final CheckoutValidator validator) {
