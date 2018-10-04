@@ -41,7 +41,7 @@ public final class OneTapSamples {
         "TEST-1458038826212807-062020-ff9273c67bc567320eae1a07d1c2d5b5-246046416";
     private static final String ONE_TAP_PAYER_9_ACCESS_TOKEN =
         "APP_USR-1031243024729642-070215-4ce0d8f4d71d238fa10c33ac79428e85-332848643";
-    private static final String ONE_TAP_MERCHANT_PUBLIC_KEY = "APP_USR-648a260d-6fd9-4ad7-9284-90f22262c18d";
+    public static final String ONE_TAP_MERCHANT_PUBLIC_KEY = "APP_USR-648a260d-6fd9-4ad7-9284-90f22262c18d";
     private static final String ONE_TAP_DIRECT_DISCOUNT_MERCHANT_PUBLIC_KEY =
         "APP_USR-ef65214d-59a2-4c82-be23-6cf6eb945d4c";
     private static final String ONE_TAP_CODE_DISCOUNT_MERCHANT_PUBLIC_KEY =
@@ -295,7 +295,7 @@ public final class OneTapSamples {
             .setPrivateKey(ONE_TAP_PAYER_3_ACCESS_TOKEN);
     }
 
-    private static CheckoutPreference getCheckoutPreferenceWithPayerEmail(final int amount) {
+    public static CheckoutPreference getCheckoutPreferenceWithPayerEmail(final int amount) {
         return getCheckoutPreferenceWithPayerEmail(new ArrayList<String>(), amount);
     }
 

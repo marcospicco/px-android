@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.mercadopago.android.px.core.MercadoPagoCheckout;
 import com.mercadopago.android.px.testcheckout.assertions.CheckoutValidator;
 import com.mercadopago.android.px.testcheckout.input.Card;
-import com.mercadopago.android.px.testcheckout.pages.CardPage;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
 import com.mercadopago.android.px.testcheckout.pages.CreditCardPage;
 import com.mercadopago.android.px.testcheckout.pages.NamePage;
@@ -37,7 +36,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToInstallments(card.cardHolderIdentityNumber())
             .selectInstallments(installmentsOption)
             .pressConfirmButton();
@@ -52,7 +51,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToInstallments(card.cardHolderIdentityNumber())
             .selectInstallments(installmentsOption)
             .pressConfirmButton();
@@ -68,7 +67,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToIssuer(card.cardHolderIdentityNumber())
             .enterBankOptionToInstallments(bankOption)
             .selectInstallments(installmentsOption)
@@ -125,7 +124,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(supportedCard.cardNumber())
             .enterCardholderName(supportedCard.cardHolderName())
             .enterExpiryDate(supportedCard.expDate())
-            .enterSecurityCode(supportedCard.escNumber())
+            .enterSecurityCodeForNewCard(supportedCard.escNumber())
             .enterIdentificationNumberToInstallments(supportedCard.cardHolderIdentityNumber())
             .selectInstallments(TWO_INSTALLMENTS_OPTION)
             .pressConfirmButton();
@@ -175,7 +174,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToIssuer(card.cardHolderIdentityNumber())
             .enterBankOptionToReviewAndConfirm(bankOption)
             .pressConfirmButton();
@@ -194,7 +193,7 @@ public class CreditCardTestFlow extends TestFlow {
         return new CreditCardPage(validator).enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToInstallments(card.cardHolderIdentityNumber())
             .selectInstallments(NO_INSTALLMENTS_OPTION)
             .pressConfirmButton();
@@ -216,7 +215,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToInstallments(card.cardHolderIdentityNumber())
             .selectInstallments(NO_INSTALLMENTS_OPTION);
     }
@@ -235,7 +234,7 @@ public class CreditCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToInstallments(card.cardHolderIdentityNumber())
             .selectInstallments(NO_INSTALLMENTS_OPTION)
             .pressConfirmButton();

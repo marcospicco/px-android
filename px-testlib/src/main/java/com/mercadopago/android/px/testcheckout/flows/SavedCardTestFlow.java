@@ -16,6 +16,7 @@ import com.mercadopago.android.px.preferences.CheckoutPreference;
 import com.mercadopago.android.px.testcheckout.input.Card;
 import com.mercadopago.android.px.testcheckout.pages.CongratsPage;
 import com.mercadopago.android.px.testcheckout.pages.DebitCardPage;
+import com.mercadopago.android.px.testcheckout.pages.InstallmentsPage;
 import com.mercadopago.android.px.testcheckout.pages.PaymentMethodPage;
 import com.mercadopago.android.px.testcheckout.pages.ReviewAndConfirmPage;
 import com.mercadopago.android.px.testcheckout.pages.SecurityCodePage;
@@ -25,13 +26,16 @@ import java.util.Collections;
 public class SavedCardTestFlow extends TestFlow {
 
     private static final String PUBLIC_KEY = "APP_USR-648a260d-6fd9-4ad7-9284-90f22262c18d";
-    private static final String ESC_NUMBER = "123";
-    private String userWithCardAccessToken = "APP_USR-1505-080815-c6ea450de1bf828e39add499237d727f-312667294";
+    private static final String CVV_NUMBER = "123";
+    public static final String PAYER_WITH_CARDS_ACCESS_TOKEN =
+        "APP_USR-1505-080815-c6ea450de1bf828e39add499237d727f-312667294";
+    private String payerWithCardAccessToken = PAYER_WITH_CARDS_ACCESS_TOKEN;
     private String cardId;
     private String paymentMethodId;
     private String paymentTypeId;
 
-    public SavedCardTestFlow(@NonNull final String cardId, @NonNull final String paymentMethodId, @NonNull final Context context) {
+    public SavedCardTestFlow(@NonNull final String cardId, @NonNull final String paymentMethodId,
+        @NonNull final Context context) {
         this.cardId = cardId;
         this.paymentMethodId = paymentMethodId;
         this.context = context;
@@ -39,17 +43,23 @@ public class SavedCardTestFlow extends TestFlow {
     }
 
     public SavedCardTestFlow(String paymentTypeId, @NonNull final Context context) {
-        userWithCardAccessToken = null;
+        payerWithCardAccessToken = null;
         this.paymentTypeId = paymentTypeId;
         this.context = context;
         this.checkout = getMercadoPagoCheckout().build();
     }
 
+    public SavedCardTestFlow(@NonNull final MercadoPagoCheckout mercadoPagoCheckout,
+         @NonNull final Context context) {
+        payerWithCardAccessToken = null;
+        this.context = context;
+        this.checkout = mercadoPagoCheckout;
+    }
 
     public CongratsPage runDefaultCardIdPaymentFlow() {
         startCheckout();
         new SecurityCodePage(null)
-            .enterSecurityCode(ESC_NUMBER);
+            .enterSecurityCodeForNewCard(CVV_NUMBER);
         return new ReviewAndConfirmPage().pressConfirmButton();
     }
 
@@ -57,8 +67,24 @@ public class SavedCardTestFlow extends TestFlow {
         PaymentMethodPage paymentMethodPage = new PaymentMethodPage(null);
         startCheckout();
         paymentMethodPage.selectSavedDebitCard()
-            .enterSecurityCode(ESC_NUMBER);
+            .enterSecurityCodeForNewCard(CVV_NUMBER);
         return new ReviewAndConfirmPage().pressConfirmButton();
+    }
+
+    public CongratsPage runVisaSavedCardFlow() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        startCheckout();
+        //Payer access token 1 = "APP_USR-1505-080815-c6ea450de1bf828e39add499237d727f-312667294"
+        //Card id = 279999120
+        return new PaymentMethodPage(null).selectVisaCreditCardWithoutEsc("5678")
+//            .enterSecurityCodeForSavedCard(CVV_NUMBER)
+            .selectInstallmentsForSavedCard(1)
+            .enterSecurityCodeForSavedCard(CVV_NUMBER)
+            .pressConfirmButton();
     }
 
     public CongratsPage runNewCardPaymentFlow(@NonNull final Card card) {
@@ -72,7 +98,7 @@ public class SavedCardTestFlow extends TestFlow {
             .enterCreditCardNumber(card.cardNumber())
             .enterCardholderName(card.cardHolderName())
             .enterExpiryDate(card.expDate())
-            .enterSecurityCode(card.escNumber())
+            .enterSecurityCodeForNewCard(card.escNumber())
             .enterIdentificationNumberToReviewAndConfirm(card.cardHolderIdentityNumber())
             .pressConfirmButton();
     }
@@ -112,7 +138,7 @@ public class SavedCardTestFlow extends TestFlow {
                     return null;
                 }
             }).build())
-            .setPrivateKey(userWithCardAccessToken);
+            .setPrivateKey(payerWithCardAccessToken);
     }
 
     @NonNull
@@ -120,9 +146,9 @@ public class SavedCardTestFlow extends TestFlow {
         final CheckoutPreference checkoutPreference = new CheckoutPreference.Builder(
             Sites.ARGENTINA, "a@a.a", Collections.singletonList(item))
             .build();
-        if(paymentTypeId != null){
-        checkoutPreference.getPaymentPreference().setDefaultPaymentTypeId(paymentTypeId);
-        checkoutPreference.getPaymentPreference().setDefaultCardId(cardId);
+        if (paymentTypeId != null) {
+            checkoutPreference.getPaymentPreference().setDefaultPaymentTypeId(paymentTypeId);
+            checkoutPreference.getPaymentPreference().setDefaultCardId(cardId);
         } else {
             checkoutPreference.getPaymentPreference().setDefaultPaymentMethodId(paymentMethodId);
             checkoutPreference.getPaymentPreference().setDefaultCardId(cardId);

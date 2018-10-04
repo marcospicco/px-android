@@ -4,6 +4,7 @@ import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.view.View;
 import com.mercadopago.android.px.R;
+import com.mercadopago.android.px.model.SecurityCode;
 import com.mercadopago.android.px.testcheckout.assertions.CheckoutValidator;
 import com.mercadopago.android.testlib.pages.PageObject;
 import org.hamcrest.Matcher;
@@ -42,6 +43,16 @@ public class InstallmentsPage extends PageObject<CheckoutValidator> {
             .perform(RecyclerViewActions.actionOnItemAtPosition(installmentsOption, click()));
 
         return new ReviewAndConfirmPage(validator);
+    }
+
+    public SecurityCodePage selectInstallmentsForSavedCard(int installmentsOption) {
+
+        Matcher<View> InstallmentsRecyclerViewMatcher = withId(R.id.mpsdkActivityInstallmentsView);
+
+        onView(InstallmentsRecyclerViewMatcher)
+            .perform(RecyclerViewActions.actionOnItemAtPosition(installmentsOption, click()));
+
+        return new SecurityCodePage(validator);
     }
 
     public DiscountDetailPage pressOnDiscountDetail() {
