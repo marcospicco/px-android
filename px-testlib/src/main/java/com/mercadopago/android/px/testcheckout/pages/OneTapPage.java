@@ -38,6 +38,11 @@ public class OneTapPage extends PageObject<CheckoutValidator> {
         return new RejectedPage(validator);
     }
 
+    public PendingPage pressConfirmButtonToPendingPage() {
+        onView(withId(R.id.px_button_primary)).perform(click());
+        return new PendingPage(validator);
+    }
+
     @Override
     public OneTapPage validate(final CheckoutValidator validator) {
         validator.validate(this);

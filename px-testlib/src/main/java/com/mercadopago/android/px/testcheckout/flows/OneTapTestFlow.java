@@ -105,4 +105,18 @@ public class OneTapTestFlow extends TestFlow {
         return new OneTapPage(validator)
             .pressConfirmButtonToRejectedPage();
     }
+
+    public CongratsPage runSavedCardWithOneTapWithESCApprovedPaymentFlow(final Card card,
+        final CheckoutValidator validator) {
+        startCheckout();
+
+        return new OneTapPage(validator).pressConfirmButtonToCongratsPage();
+    }
+
+    public PendingPage runSavedCardWithOneTapWithESCPendingPaymentFlow(final Card card,
+        final CheckoutValidator validator) {
+        startCheckout();
+
+        return new OneTapPage(validator).pressConfirmButtonToPendingPage();
+    }
 }
