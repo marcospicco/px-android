@@ -1,5 +1,6 @@
 package com.mercadopago.android.px.internal.features.onetap;
 
+import com.mercadopago.android.px.internal.repository.GroupsRepository;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.model.Card;
@@ -54,11 +55,14 @@ public class OneTapPresenterTest {
     @Mock
     private PaymentSettingRepository configuration;
 
+    @Mock
+    private GroupsRepository groupsRepository;
+
     private OneTapPresenter oneTapPresenter;
 
     @Before
     public void setUp() {
-        oneTapPresenter = new OneTapPresenter(paymentRepository);
+        oneTapPresenter = new OneTapPresenter(paymentRepository, configuration, groupsRepository);
         oneTapPresenter.attachView(view);
     }
 

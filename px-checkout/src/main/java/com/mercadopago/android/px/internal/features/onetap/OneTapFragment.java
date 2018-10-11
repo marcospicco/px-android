@@ -50,7 +50,7 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     /* default */ OneTapPresenter presenter;
 
     private Toolbar toolbar;
-    private InstallmentsDescriptorView installmentsDecriptor;
+    private InstallmentsDescriptorView installmentsDescriptor;
     private OneTapView oneTapView;
 
     public static Fragment getInstance() {
@@ -118,7 +118,7 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     @Override
     public void showAmountRow(@NonNull final InstallmentsDescriptorView.Model installmentsModel) {
 
-        installmentsDecriptor.update(installmentsModel);
+        installmentsDescriptor.update(installmentsModel);
     }
 
     private void trackScreen() {
@@ -136,7 +136,8 @@ public class OneTapFragment extends Fragment implements OneTap.View {
 
     private void configureView(final View view) {
         toolbar = view.findViewById(R.id.toolbar);
-        installmentsDecriptor = view.findViewById(R.id.installments_descriptor);
+        //TODO arreglar donde se agrega la vista de installments.
+        installmentsDescriptor = view.findViewById(R.id.installments_descriptor);
         configureToolbar(toolbar);
         oneTapView = view.findViewById(R.id.one_tap_container);
         oneTapView.setOneTapModel(presenter);
