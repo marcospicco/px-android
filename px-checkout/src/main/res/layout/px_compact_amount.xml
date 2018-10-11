@@ -49,7 +49,7 @@
             app:autoSizeStepGranularity="1dp"
             app:autoSizeTextType="uniform"
             app:font_style="light"
-            tools:text="3x $1232,23"/>
+            tools:text="3x $122,23"/>
 
         <ImageView
             android:id="@+id/arrow"

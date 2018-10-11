@@ -28,6 +28,7 @@ import com.mercadopago.android.px.internal.features.onetap.components.OneTapView
 import com.mercadopago.android.px.internal.features.plugins.PaymentProcessorActivity;
 import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.StatusBarDecorator;
+import com.mercadopago.android.px.internal.view.InstallmentsDescriptorView;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.GenericPayment;
@@ -49,6 +50,7 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     /* default */ OneTapPresenter presenter;
 
     private Toolbar toolbar;
+    private InstallmentsDescriptorView installmentsDecriptor;
     private OneTapView oneTapView;
 
     public static Fragment getInstance() {
@@ -105,10 +107,18 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         final Session session = Session.getSession(view.getContext());
-        presenter = new OneTapPresenter(session.getPaymentRepository());
+        presenter =
+            new OneTapPresenter(session.getPaymentRepository(), session.getConfigurationModule().getPaymentSettings(),
+                session.getGroupsRepository());
         configureView(view);
         presenter.attachView(this);
         trackScreen();
+    }
+
+    @Override
+    public void showAmountRow(@NonNull final InstallmentsDescriptorView.Model installmentsModel) {
+
+        installmentsDecriptor.update(installmentsModel);
     }
 
     private void trackScreen() {
@@ -126,6 +136,7 @@ public class OneTapFragment extends Fragment implements OneTap.View {
 
     private void configureView(final View view) {
         toolbar = view.findViewById(R.id.toolbar);
+        installmentsDecriptor = view.findViewById(R.id.installments_descriptor);
         configureToolbar(toolbar);
         oneTapView = view.findViewById(R.id.one_tap_container);
         oneTapView.setOneTapModel(presenter);

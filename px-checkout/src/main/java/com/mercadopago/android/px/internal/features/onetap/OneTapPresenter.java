@@ -5,24 +5,50 @@ import com.mercadopago.android.px.internal.base.MvpPresenter;
 import com.mercadopago.android.px.internal.base.ResourcesProvider;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecoratorMapper;
 import com.mercadopago.android.px.internal.features.explode.ExplodingFragment;
+import com.mercadopago.android.px.internal.repository.GroupsRepository;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
+import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
+import com.mercadopago.android.px.internal.view.InstallmentsDescriptorView;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.GenericPayment;
 import com.mercadopago.android.px.model.IPayment;
+import com.mercadopago.android.px.model.OneTapMetadata;
+import com.mercadopago.android.px.model.PayerCost;
 import com.mercadopago.android.px.model.Payment;
+import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentRecovery;
+import com.mercadopago.android.px.model.Sites;
+import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.services.Callback;
+import java.math.BigDecimal;
 
 /* default */ class OneTapPresenter extends MvpPresenter<OneTap.View, ResourcesProvider>
     implements OneTap.Actions {
 
     @NonNull private final PaymentRepository paymentRepository;
+    @NonNull private final PaymentSettingRepository configuration;
     private final ExplodeDecoratorMapper explodeDecoratorMapper;
+    private OneTapMetadata oneTapMetadata;
 
-    /* default */ OneTapPresenter(@NonNull final PaymentRepository paymentRepository) {
+    /* default */ OneTapPresenter(@NonNull final PaymentRepository paymentRepository,
+        @NonNull final PaymentSettingRepository configuration, @NonNull final GroupsRepository groupsRepository) {
         this.paymentRepository = paymentRepository;
+        this.configuration = configuration;
         explodeDecoratorMapper = new ExplodeDecoratorMapper();
+
+        groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
+            @Override
+            public void success(final PaymentMethodSearch paymentMethodSearch) {
+                oneTapMetadata = paymentMethodSearch.getOneTapMetadata();
+            }
+
+            @Override
+            public void failure(final ApiException apiException) {
+                throw new IllegalStateException("groups missing rendering one tap");
+            }
+        });
     }
 
     @Override
@@ -134,6 +160,11 @@ import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 
     @Override
     public void onViewResumed() {
+        InstallmentsDescriptorView.Model model =
+            InstallmentsDescriptorView.Model.createFrom(configuration, oneTapMetadata.getCard());
+
+        getView().showAmountRow(model);
+
         getView().updateViews();
         paymentRepository.attach(this);
 

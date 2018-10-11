@@ -49,5 +49,10 @@
         app:elevation="0dp"
         android:background="@color/px_transparent"/>
 
+    <com.mercadopago.android.px.internal.view.InstallmentsDescriptorView
+        android:id="@+id/installments_descriptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </FrameLayout>
 
