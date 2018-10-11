@@ -42,6 +42,8 @@
     <color name="px_color_new_card_form_background_dark_alpha">#B3FFFFFF</color>
     <color name="px_color_new_card_text">#999999</color>
     <color name="px_color_red_error">#FF2B2B</color>
+    <color name="px_descriptors_dark_grey">#cc000000</color>
+    <color name="px_descriptors_light_dark_grey">#73000000</color>
     <color name="px_mp_blue">#009EE3</color>
     <color name="px_review_payment_methods_background">#474747</color>
 
