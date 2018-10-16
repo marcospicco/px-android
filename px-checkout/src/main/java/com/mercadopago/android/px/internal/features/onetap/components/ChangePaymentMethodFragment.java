@@ -41,7 +41,7 @@ public class ChangePaymentMethodFragment extends Fragment implements View.OnClic
     }
 
     @NonNull
-    public static Fragment getInstance(final ChangePaymentMethodDrawableItem drawableItem) {
+    public static Fragment getInstance(@NonNull final ChangePaymentMethodDrawableItem drawableItem) {
         final ChangePaymentMethodFragment changePaymentMethodFragment = new ChangePaymentMethodFragment();
         final Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_MODEL, drawableItem);

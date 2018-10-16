@@ -48,7 +48,6 @@ public class PaymentMethodFragmentAdapter extends FragmentStatePagerAdapter impl
 
     @Override
     public Fragment draw(@NonNull final AccountMonetDrawableItem drawableItem) {
-        //TODO
-        return new PaymentMethodFragment();
+        return AccountMoneyFragment.getInstance(drawableItem);
     }
 }

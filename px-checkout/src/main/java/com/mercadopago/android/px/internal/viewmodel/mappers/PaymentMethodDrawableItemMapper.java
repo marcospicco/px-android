@@ -22,12 +22,13 @@ public class PaymentMethodDrawableItemMapper extends Mapper<PaymentMethodSearch,
         // Onetap selected first.
         final List<DrawableItem> result = new ArrayList<>();
 
+        result.add(new AccountMonetDrawableItem("Total en tu cuenta: $ 5.632"));
+
         for (final CustomSearchItem item : val.getCustomSearchItems()) {
             final Card card = val.getCardById(item.getId());
             result.add(new SavedCardDrawableItem(card));
         }
 
-        result.add(new AccountMonetDrawableItem());
 
         //TODO fix.
         result.add(new ChangePaymentMethodDrawableItem("Agregar nueva tarjeta"));
