@@ -2,6 +2,7 @@ package com.mercadopago.android.px.internal.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,6 +38,7 @@ public class ElementDescriptorView extends LinearLayout {
         float iconHeight;
         float iconWidth;
         float labelSize;
+        int textColor;
         try {
             iconHeight =
                 a.getDimension(R.styleable.PXElementDescriptorView_px_element_icon_height, LayoutParams.WRAP_CONTENT);
@@ -44,14 +46,21 @@ public class ElementDescriptorView extends LinearLayout {
                 a.getDimension(R.styleable.PXElementDescriptorView_px_element_icon_width, LayoutParams.WRAP_CONTENT);
             labelSize = a.getDimensionPixelSize(R.styleable.PXElementDescriptorView_px_element_label_size,
                 (int) context.getResources().getDimension(R.dimen.px_l_text));
+
+            textColor = a.getColor(R.styleable.PXElementDescriptorView_px_element_label_text_color, Color.BLACK);
+
         } finally {
             a.recycle();
         }
-        init(iconWidth, iconHeight, labelSize);
+        init(iconWidth, iconHeight, labelSize, textColor);
     }
 
     public void setTextSize(final float textSize) {
         label.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+    }
+
+    public void setTextColor(final int textColor) {
+        label.setTextColor(textColor);
     }
 
     public void setIconSize(final int width, final int height) {
@@ -61,12 +70,13 @@ public class ElementDescriptorView extends LinearLayout {
         icon.setLayoutParams(layoutParams);
     }
 
-    private void init(final float iconWidth, final float iconHeight, final float labelSize) {
+    private void init(final float iconWidth, final float iconHeight, final float labelSize, final int textColor) {
         inflate(getContext(), R.layout.px_toolbar_drawable_container, this);
         label = findViewById(R.id.label);
         icon = findViewById(R.id.icon);
         setIconSize((int) iconWidth, (int) iconHeight);
         label.setTextSize(TypedValue.COMPLEX_UNIT_PX, labelSize);
+        label.setTextColor(textColor);
     }
 
     public void update(@NonNull final ElementDescriptorView.Model model) {

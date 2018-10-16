@@ -170,4 +170,6 @@
 
     <color name="px_paymentMethodTint">@color/px_colorPrimary</color>
 
+    <color name="px_expressCheckoutTextColor">@color/px_white</color>
+
 </resources>

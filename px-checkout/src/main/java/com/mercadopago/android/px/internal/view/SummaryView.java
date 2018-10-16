@@ -52,6 +52,7 @@ public class SummaryView extends LinearLayout {
         elementDescriptorView.setIconSize(iconSize, iconSize);
         elementDescriptorView.setOrientation(VERTICAL);
         elementDescriptorView.setTextSize(resources.getDimension(R.dimen.px_xxl_text));
+        elementDescriptorView.setTextColor(resources.getColor(R.color.px_expressCheckoutTextColor));
         addView(elementDescriptorView);
     }
 

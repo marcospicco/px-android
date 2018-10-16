@@ -23,6 +23,7 @@
         <attr name="px_element_icon_height" format="dimension" />
         <attr name="px_element_icon_width" format="dimension" />
         <attr name="px_element_label_size" format="dimension" />
+        <attr name="px_element_label_text_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="PXAmountDescriptorView">
