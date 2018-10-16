@@ -12,15 +12,18 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/px_m_margin"
         app:cardCornerRadius="@dimen/px_xs_margin"
+        app:cardPreventCornerOverlap="false"
         app:cardElevation="2dp">
 
 
         <ImageView
+            android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/px_gradient_account_money"/>
 
         <ImageView
+            android:adjustViewBounds="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|end|right"
