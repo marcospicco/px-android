@@ -48,14 +48,25 @@ public class InstallmentFormatter extends ChainFormatter {
 
             spannableStringBuilder.append(charSequence);
 
-            if (textColor != null) {
-                //TODO arreglar el style, en esta parte tiene que ser semi bold
-//            final StyleSpan installmentsDescriptionStyle = new StyleSpan(android.graphics.Typeface.BOLD);
-                spannableStringBuilder
-                    .setSpan(textColor, 0, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            }
+            updateTextColor(0, length);
+
+        } else {
+            final int holder = R.string.px_string_holder;
+            final CharSequence charSequence = context.getResources().getString(holder, amount);
+            spannableStringBuilder.append(charSequence);
+
+            updateTextColor(0, charSequence.length());
         }
 
         return spannableStringBuilder;
+    }
+
+    private void updateTextColor(final int indexStart, final int indexEnd) {
+        if (textColor != null) {
+            //TODO arreglar el style, en esta parte tiene que ser semi bold
+//            final StyleSpan installmentsDescriptionStyle = new StyleSpan(android.graphics.Typeface.BOLD);
+            spannableStringBuilder
+                .setSpan(textColor, indexStart, indexEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
     }
 }

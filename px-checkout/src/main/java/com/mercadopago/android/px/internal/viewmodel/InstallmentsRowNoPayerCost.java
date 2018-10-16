@@ -2,8 +2,12 @@ package com.mercadopago.android.px.internal.viewmodel;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
+import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
+import com.mercadopago.android.px.internal.util.textformatter.InstallmentFormatter;
 import com.mercadopago.android.px.internal.view.InstallmentsDescriptorView;
 import com.mercadopago.android.px.model.CardPaymentMetadata;
 import com.mercadopago.android.px.model.PayerCost;
@@ -17,7 +21,7 @@ import java.math.BigDecimal;
 public final class InstallmentsRowNoPayerCost extends InstallmentsDescriptorView.Model {
 
     private InstallmentsRowNoPayerCost(@NonNull final String currencyId,
-        @NonNull final PayerCost payerCost,
+        @Nullable final PayerCost payerCost,
         @NonNull final BigDecimal totalAmount) {
         super(currencyId, payerCost, totalAmount);
     }
@@ -25,13 +29,15 @@ public final class InstallmentsRowNoPayerCost extends InstallmentsDescriptorView
     @Override
     public void updateInstallmentsRowSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
         @NonNull final Context context, @NonNull final CharSequence amount) {
-        //TODO implement
+        final InstallmentFormatter installmentFormatter = new InstallmentFormatter(spannableStringBuilder, context)
+            .withTextColor(ContextCompat.getColor(context, R.color.ui_meli_black));
+        installmentFormatter.build(amount);
     }
 
     public static InstallmentsDescriptorView.Model createFrom(@NonNull final PaymentSettingRepository configuration,
-        @NonNull final CardPaymentMetadata card) {
+        @Nullable final CardPaymentMetadata card) {
         final CheckoutPreference checkoutPreference = configuration.getCheckoutPreference();
-        final PayerCost payerCost = card.getAutoSelectedInstallment();
+        final PayerCost payerCost = card == null ? null: card.getAutoSelectedInstallment();
         final String currencyId = checkoutPreference.getSite().getCurrencyId();
         final BigDecimal totalAmount = checkoutPreference.getTotalAmount();
         return new InstallmentsRowNoPayerCost(currencyId, payerCost, totalAmount);

@@ -2,6 +2,7 @@ package com.mercadopago.android.px.internal.viewmodel;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import com.mercadopago.android.px.R;
@@ -20,7 +21,7 @@ import java.math.BigDecimal;
 public final class InstallmentsRowWithPayerCost extends InstallmentsDescriptorView.Model {
 
     private InstallmentsRowWithPayerCost(@NonNull final String currencyId,
-        @NonNull final PayerCost payerCost,
+        @Nullable final PayerCost payerCost,
         @NonNull final BigDecimal totalAmount) {
         super(currencyId, payerCost, totalAmount);
     }

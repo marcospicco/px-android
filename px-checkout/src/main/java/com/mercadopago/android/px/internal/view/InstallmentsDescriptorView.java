@@ -130,7 +130,7 @@ public class InstallmentsDescriptorView extends MPTextView {
         private final PayerCost payerCost;
         private final BigDecimal totalAmount;
 
-        protected Model(@NonNull final String currencyId, @NonNull final PayerCost payerCost,
+        protected Model(@NonNull final String currencyId, @Nullable final PayerCost payerCost,
             @NonNull final BigDecimal totalAmount) {
             this.currencyId = currencyId;
             this.payerCost = payerCost;
@@ -141,10 +141,14 @@ public class InstallmentsDescriptorView extends MPTextView {
             return currencyId;
         }
 
+        @Nullable
         public PayerCost getPayerCost() {
-            payerCost.setInstallmentRate(new BigDecimal(10));
-            payerCost.setTotalAmount(new BigDecimal(400.90));
-            payerCost.setInstallments(3);
+            //TODO borrar, era solo para probar
+//            if (payerCost != null) {
+//                payerCost.setInstallmentRate(new BigDecimal(10));
+//                payerCost.setTotalAmount(new BigDecimal(400.90));
+//                payerCost.setInstallments(3);
+//            }
             return payerCost;
         }
 
@@ -153,7 +157,7 @@ public class InstallmentsDescriptorView extends MPTextView {
         }
 
         boolean hasMultipleInstallments() {
-            return payerCost.getInstallments() > 1;
+            return payerCost != null && payerCost.getInstallments() > 1;
         }
 
         public abstract void updateInstallmentsRowSpannable(
