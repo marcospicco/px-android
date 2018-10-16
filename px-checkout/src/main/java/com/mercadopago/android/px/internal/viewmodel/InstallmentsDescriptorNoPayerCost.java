@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
+import android.widget.TextView;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.util.textformatter.InstallmentFormatter;
@@ -28,7 +29,7 @@ public final class InstallmentsDescriptorNoPayerCost extends InstallmentsDescrip
 
     @Override
     public void updateInstallmentsDescriptionSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
-        @NonNull final Context context, @NonNull final CharSequence amount) {
+        @NonNull final Context context, @NonNull final CharSequence amount, @NonNull final TextView textView) {
         final InstallmentFormatter installmentFormatter = new InstallmentFormatter(spannableStringBuilder, context)
             .withTextColor(ContextCompat.getColor(context, R.color.ui_meli_black));
         installmentFormatter.build(amount);

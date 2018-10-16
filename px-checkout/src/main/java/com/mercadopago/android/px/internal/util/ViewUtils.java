@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,5 +125,13 @@ public final class ViewUtils {
         params.height = (int) context.getResources().getDimension(height);
         params.width = (int) context.getResources().getDimension(width);
         viewGroup.setLayoutParams(params);
+    }
+
+    public static void setColorInSpannable(final int color, final int indexStart, final int indexEnd,
+        @NonNull final Spannable spannable) {
+        if (color != 0) {
+            spannable.setSpan(new ForegroundColorSpan(color), indexStart, indexEnd,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        }
     }
 }

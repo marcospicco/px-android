@@ -8,6 +8,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.widget.TextView;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.util.textformatter.AmountFormatter;
 import com.mercadopago.android.px.internal.util.textformatter.CurrencyFormatter;
@@ -56,7 +57,7 @@ public class InstallmentsDescriptorView extends MPTextView {
             .normalDecimals()
             .into(this)
             .toSpannable();
-        model.updateInstallmentsDescriptionSpannable(spannableStringBuilder, getContext(), amount);
+        model.updateInstallmentsDescriptionSpannable(spannableStringBuilder, getContext(), amount, this);
     }
 
     private void updateInterestDescription(@NonNull final Model model,
@@ -118,7 +119,7 @@ public class InstallmentsDescriptorView extends MPTextView {
 
         public abstract void updateInstallmentsDescriptionSpannable(
             @NonNull final SpannableStringBuilder spannableStringBuilder,
-            @NonNull final Context context, @NonNull final CharSequence amount);
+            @NonNull final Context context, @NonNull final CharSequence amount, @NonNull final TextView textView);
 
         public abstract void updateInterestDescriptionSpannable(
             @NonNull final SpannableStringBuilder spannableStringBuilder,

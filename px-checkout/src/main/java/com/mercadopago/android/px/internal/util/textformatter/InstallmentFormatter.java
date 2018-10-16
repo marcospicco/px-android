@@ -5,14 +5,19 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.widget.TextView;
+import com.mercadolibre.android.ui.font.Font;
 import com.mercadopago.android.px.R;
+import com.mercadopago.android.px.internal.util.ViewUtils;
 
 public class InstallmentFormatter extends ChainFormatter {
 
     private int installment;
-    private ForegroundColorSpan textColor;
+    private int textColor;
     private final Context context;
     private final SpannableStringBuilder spannableStringBuilder;
+    private Font fontStyle;
+    private TextView textView;
 
     public InstallmentFormatter(@NonNull final SpannableStringBuilder spannableStringBuilder,
         @NonNull final Context context) {
@@ -26,7 +31,13 @@ public class InstallmentFormatter extends ChainFormatter {
     }
 
     public InstallmentFormatter withTextColor(final int color) {
-        textColor = new ForegroundColorSpan(color);
+        textColor = color;
+        return this;
+    }
+
+    public InstallmentFormatter withTextStyle(@NonNull final Font fontStyle, @NonNull final TextView textView) {
+        this.fontStyle = fontStyle;
+        this.textView = textView;
         return this;
     }
 
@@ -49,7 +60,6 @@ public class InstallmentFormatter extends ChainFormatter {
             spannableStringBuilder.append(charSequence);
 
             updateTextColor(0, length);
-
         } else {
             final int holder = R.string.px_string_holder;
             final CharSequence charSequence = context.getResources().getString(holder, amount);
@@ -62,11 +72,20 @@ public class InstallmentFormatter extends ChainFormatter {
     }
 
     private void updateTextColor(final int indexStart, final int indexEnd) {
-        if (textColor != null) {
-            //TODO arreglar el style, en esta parte tiene que ser semi bold
-//            final StyleSpan installmentsDescriptionStyle = new StyleSpan(android.graphics.Typeface.BOLD);
-            spannableStringBuilder
-                .setSpan(textColor, indexStart, indexEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        if (textColor != 0) {
+            ViewUtils.setColorInSpannable(textColor, indexStart, indexStart + indexEnd, spannableStringBuilder);
         }
+    }
+
+    private void updateTextStyle(final int indexStart, final int indexEnd) {
+
+        //TODO arreglar el style, en esta parte tiene que ser semi bold
+//        final StyleSpan installmentsDescriptionStyle =
+//            new StyleSpan(TypefaceHelper.setTypeface(textView, Font.SEMI_BOLD));
+//
+//        if (fontStyle != null && textView != null) {
+//            spannableStringBuilder.setSpan(TypefaceHelper.setTypeface(textView, fontStyle), indexStart, indexEnd,
+//                Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//        }
     }
 }
