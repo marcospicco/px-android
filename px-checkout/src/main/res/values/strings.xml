@@ -9,6 +9,7 @@
     <string name="px_card_association_result_error_retry_button_text">Try again</string>
 
     <!-- One tap -->
+    <string name="px_amount_with_installments_holder">%1$sx %2$s</string>
     <string name="px_total_amount_holder" translatable="false">(%1$s)</string>
     <string name="px_string_holder" translatable="false">%1$s</string>
     <string name="px_payment_detail_title_modal">Detail</string>

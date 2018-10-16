@@ -9,6 +9,8 @@ import com.mercadopago.android.px.internal.repository.GroupsRepository;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.view.InstallmentsDescriptorView;
+import com.mercadopago.android.px.internal.viewmodel.InstallmentsRowNoPayerCost;
+import com.mercadopago.android.px.internal.viewmodel.InstallmentsRowWithPayerCost;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.GenericPayment;
@@ -18,6 +20,7 @@ import com.mercadopago.android.px.model.PayerCost;
 import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentRecovery;
+import com.mercadopago.android.px.model.PaymentTypes;
 import com.mercadopago.android.px.model.Sites;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
@@ -160,11 +163,7 @@ import java.math.BigDecimal;
 
     @Override
     public void onViewResumed() {
-        InstallmentsDescriptorView.Model model =
-            InstallmentsDescriptorView.Model.createFrom(configuration, oneTapMetadata.getCard());
-
-        getView().showAmountRow(model);
-
+        getView().showAmountRow(createInstallmentsDescriptorModel());
         getView().updateViews();
         paymentRepository.attach(this);
 
@@ -173,6 +172,16 @@ import java.math.BigDecimal;
         //remove the exploding fragment we had before.
         if (paymentRepository.hasPayment()) {
             getView().cancelLoading();
+        }
+    }
+
+    private InstallmentsDescriptorView.Model createInstallmentsDescriptorModel() {
+        final String paymentTypeId = oneTapMetadata.getPaymentTypeId();
+        if (PaymentTypes.isCreditCardPaymentType(paymentTypeId)) {
+            return InstallmentsRowWithPayerCost.createFrom(configuration, oneTapMetadata.getCard());
+        } else {
+            //TODO fix account money case
+            return InstallmentsRowNoPayerCost.createFrom(configuration, oneTapMetadata.getCard());
         }
     }
 

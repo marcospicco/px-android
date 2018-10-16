@@ -1,26 +1,18 @@
 package com.mercadopago.android.px.internal.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.AttributeSet;
-import android.view.Gravity;
-import android.widget.LinearLayout;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.internal.repository.DiscountRepository;
-import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.util.textformatter.AmountFormatter;
 import com.mercadopago.android.px.internal.util.textformatter.CurrencyFormatter;
 import com.mercadopago.android.px.internal.util.textformatter.TextFormatter;
-import com.mercadopago.android.px.model.CardPaymentMetadata;
 import com.mercadopago.android.px.model.PayerCost;
-import com.mercadopago.android.px.preferences.CheckoutPreference;
 import java.math.BigDecimal;
 
 public class InstallmentsDescriptorView extends MPTextView {
@@ -61,23 +53,11 @@ public class InstallmentsDescriptorView extends MPTextView {
         final AmountFormatter amountFormatter = model.hasMultipleInstallments() ?
             currencyFormatter.amount(model.getPayerCost().getInstallmentAmount()) :
             currencyFormatter.amount(model.getTotalAmount());
-
-        final String installmentAmount = model.getPayerCost().getInstallments().toString();
-        final String x = getContext().getString(R.string.px_installments_by);
-        final String separator = " ";
         final CharSequence amount = amountFormatter
-            .smallDecimals()
+            .normalDecimals()
             .into(this)
             .toSpannable();
-        final int firstElementLength = installmentAmount.length() + x.length() + separator.length() + amount.length();
-        spannableStringBuilder.append(installmentAmount).append(x).append(separator).append(amount);
-
-        final ForegroundColorSpan installmentsDescriptionColor =
-            new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.ui_meli_black));
-        //TODO arreglar el style, en esta parte tiene que ser semi bold
-        final StyleSpan installmentsDescriptionStyle = new StyleSpan(android.graphics.Typeface.BOLD);
-        spannableStringBuilder
-            .setSpan(installmentsDescriptionColor, 0, firstElementLength, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        model.updateInstallmentsRowSpannable(spannableStringBuilder, getContext(), amount);
     }
 
     private void updateInterestDescription(@NonNull final Model model,
@@ -145,21 +125,12 @@ public class InstallmentsDescriptorView extends MPTextView {
     //TODO falta pasar el payment type, o hacer un modelo abstracto, al cual le podamos pedir los spannables
     //TODO que haya dos implementaciones del modelo, uno para debito y otro para credito, entonces devuelven los
     //TODO textos según la logica de cada uno.
-    public static final class Model {
+    public abstract static class Model {
         private final String currencyId;
         private final PayerCost payerCost;
         private final BigDecimal totalAmount;
 
-        public static Model createFrom(@NonNull final PaymentSettingRepository configuration,
-            @NonNull final CardPaymentMetadata card) {
-            final CheckoutPreference checkoutPreference = configuration.getCheckoutPreference();
-            final PayerCost payerCost = card.getAutoSelectedInstallment();
-            final String currencyId = checkoutPreference.getSite().getCurrencyId();
-            final BigDecimal totalAmount = checkoutPreference.getTotalAmount();
-            return new Model(currencyId, payerCost, totalAmount);
-        }
-
-        private Model(@NonNull final String currencyId, @NonNull final PayerCost payerCost,
+        protected Model(@NonNull final String currencyId, @NonNull final PayerCost payerCost,
             @NonNull final BigDecimal totalAmount) {
             this.currencyId = currencyId;
             this.payerCost = payerCost;
@@ -184,5 +155,9 @@ public class InstallmentsDescriptorView extends MPTextView {
         boolean hasMultipleInstallments() {
             return payerCost.getInstallments() > 1;
         }
+
+        public abstract void updateInstallmentsRowSpannable(
+            @NonNull final SpannableStringBuilder spannableStringBuilder,
+            @NonNull final Context context, @NonNull final CharSequence amount);
     }
 }
