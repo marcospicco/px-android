@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.configuration.ReviewAndConfirmConfiguration;
 import com.mercadopago.android.px.internal.di.ConfigurationModule;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.features.onetap.OneTap;
@@ -34,7 +33,7 @@ public class OneTapView extends LinearLayout {
     private View amountContainer;
     private View paymentMethodContainer;
     private View termsContainer;
-    private View confirmButton;
+//    private View confirmButton;
 
     public OneTapView(final Context context) {
         this(context, null);
@@ -59,22 +58,19 @@ public class OneTapView extends LinearLayout {
         final ConfigurationModule configurationModule = session.getConfigurationModule();
         final PaymentSettingRepository configuration = configurationModule.getPaymentSettings();
         final DiscountRepository discountRepository = session.getDiscountRepository();
-        final ReviewAndConfirmConfiguration reviewAndConfirmConfiguration =
-            configuration.getAdvancedConfiguration().getReviewAndConfirmConfiguration();
 
         session.getGroupsRepository().getGroups().execute(new Callback<PaymentMethodSearch>() {
             @Override
             public void success(final PaymentMethodSearch paymentMethodSearch) {
 
-                addItems(reviewAndConfirmConfiguration, configuration);
                 amountContainer = createAmountView(configuration, discountRepository, paymentMethodSearch);
                 addView(amountContainer);
-                addPaymentMethod(configuration, discountRepository, paymentMethodSearch);
+//                addPaymentMethod(configuration, discountRepository, paymentMethodSearch);
                 termsContainer = createTermsView(discountRepository);
                 if (termsContainer != null) {
                     addView(termsContainer);
                 }
-                confirmButton = addConfirmButton(discountRepository);
+//                confirmButton = addConfirmButton(discountRepository);
             }
 
             @Override
@@ -82,19 +78,6 @@ public class OneTapView extends LinearLayout {
                 throw new IllegalStateException("groups missing rendering one tap");
             }
         });
-    }
-
-    private void addItems(@NonNull final ReviewAndConfirmConfiguration reviewAndConfirmConfiguration,
-        @NonNull final PaymentSettingRepository configuration) {
-
-        final Integer collectorIcon = reviewAndConfirmConfiguration.getCollectorIcon();
-        final String defaultMultipleTitle = getContext().getString(R.string.px_review_summary_products);
-        final int icon = collectorIcon == null ? R.drawable.px_review_item_default : collectorIcon;
-        final String itemsTitle = com.mercadopago.android.px.model.Item
-            .getItemsTitle(configuration.getCheckoutPreference().getItems(), defaultMultipleTitle);
-
-        final View view = new CollapsedItem(new CollapsedItem.Props(icon, itemsTitle)).render(this);
-        addView(view);
     }
 
     public void update() {
@@ -186,37 +169,5 @@ public class OneTapView extends LinearLayout {
                 .render(this);
         }
         return null;
-    }
-
-    private View addConfirmButton(@NonNull final DiscountRepository discountRepository) {
-        final Discount discount = discountRepository.getDiscount();
-
-        final String confirm = getContext().getString(R.string.px_confirm);
-        final Button.Actions buttonActions = new Button.Actions() {
-            @Override
-            public void onClick(final Action action) {
-                if (actionCallback != null) {
-                    actionCallback.confirmPayment();
-                }
-            }
-
-        };
-
-        final Button button = new ButtonPrimary(new Button.Props(confirm), buttonActions);
-        final View view = button.render(this);
-        final int resMargin = discount == null ? R.dimen.px_m_margin : R.dimen.px_zero_height;
-        ViewUtils.setMarginTopInView(view, getContext().getResources().getDimensionPixelSize(resMargin));
-        addView(view);
-        return view;
-    }
-
-    public void hideConfirmButton() {
-        confirmButton.setVisibility(INVISIBLE);
-    }
-
-    public void showButton() {
-        if (confirmButton != null) {
-            confirmButton.setVisibility(VISIBLE);
-        }
     }
 }

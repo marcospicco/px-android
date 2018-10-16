@@ -9,13 +9,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.mercadolibre.android.ui.widgets.MeliButton;
+import android.widget.LinearLayout;
 import com.mercadolibre.android.ui.widgets.MeliSnackbar;
 import com.mercadopago.android.px.R;
 import com.mercadopago.android.px.internal.di.Session;
@@ -24,26 +25,42 @@ import com.mercadopago.android.px.internal.features.Constants;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecorator;
 import com.mercadopago.android.px.internal.features.explode.ExplodeParams;
 import com.mercadopago.android.px.internal.features.explode.ExplodingFragment;
-import com.mercadopago.android.px.internal.features.onetap.components.OneTapView;
+import com.mercadopago.android.px.internal.features.onetap.components.PaymentMethodFragmentAdapter;
 import com.mercadopago.android.px.internal.features.plugins.PaymentProcessorActivity;
+import com.mercadopago.android.px.internal.repository.DiscountRepository;
 import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.StatusBarDecorator;
+import com.mercadopago.android.px.internal.util.ViewUtils;
+import com.mercadopago.android.px.internal.view.AmountDescriptorView;
+import com.mercadopago.android.px.internal.view.Button;
+import com.mercadopago.android.px.internal.view.ButtonPrimary;
+import com.mercadopago.android.px.internal.view.ElementDescriptorView;
 import com.mercadopago.android.px.internal.view.InstallmentsDescriptorView;
+import com.mercadopago.android.px.internal.view.ScrollingPagerIndicator;
+import com.mercadopago.android.px.internal.view.SummaryView;
+import com.mercadopago.android.px.internal.viewmodel.drawables.DrawableItem;
+import com.mercadopago.android.px.internal.viewmodel.mappers.ElementDescriptorMapper;
+import com.mercadopago.android.px.model.Action;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
+import com.mercadopago.android.px.model.Discount;
 import com.mercadopago.android.px.model.GenericPayment;
 import com.mercadopago.android.px.model.IPayment;
 import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class OneTapFragment extends Fragment implements OneTap.View {
 
+    private static final String TAG_EXPLODING_FRAGMENT = "TAG_EXPLODING_FRAGMENT";
     private static final int REQ_CODE_CARD_VAULT = 0x999;
     private static final int REQ_CODE_PAYMENT_PROCESSOR = 0x123;
-    private static final String TAG_EXPLODING_FRAGMENT = "TAG_EXPLODING_FRAGMENT";
+    private static final float PAGER_VISIBILITY_MULTIPLIER = 1.5f;
 
     private CallBack callback;
 
@@ -51,7 +68,10 @@ public class OneTapFragment extends Fragment implements OneTap.View {
 
     private Toolbar toolbar;
     private InstallmentsDescriptorView installmentsDescriptor;
-    private OneTapView oneTapView;
+    private SummaryView summaryView;
+
+    private ViewGroup linearContainer;
+    private View confirmButton;
 
     public static Fragment getInstance() {
         return new OneTapFragment();
@@ -64,6 +84,25 @@ public class OneTapFragment extends Fragment implements OneTap.View {
         void onChangePaymentMethod();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull final LayoutInflater inflater,
+        @Nullable final ViewGroup container,
+        @Nullable final Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.px_onetap_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+        final Session session = Session.getSession(view.getContext());
+        presenter = new OneTapPresenter(session.getPaymentRepository(),
+            session.getConfigurationModule().getPaymentSettings(),
+            new ElementDescriptorMapper(getString(R.string.px_review_summary_products)),
+            session.getGroupsRepository());
+        presenter.attachView(this);
+        trackScreen();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -74,11 +113,6 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     public void onPause() {
         presenter.onViewPaused();
         super.onPause();
-    }
-
-    @Override
-    public void updateViews() {
-        oneTapView.update();
     }
 
     @Override
@@ -96,29 +130,46 @@ public class OneTapFragment extends Fragment implements OneTap.View {
         super.onDetach();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull final LayoutInflater inflater,
-        @Nullable final ViewGroup container,
-        @Nullable final Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.px_onetap_fragment, container, false);
+    public void configureView(@NonNull final List<DrawableItem> items) {
+        final View view = getView();
+        linearContainer = view.findViewById(R.id.linear_container);
+        final ScrollingPagerIndicator indicator = view.findViewById(R.id.indicator);
+        summaryView = view.findViewById(R.id.summary_view);
+        final ViewPager paymentMethodPager = view.findViewById(R.id.payment_method_pager);
+        paymentMethodPager.setPageMargin(
+            ((int) (-getResources().getDimensionPixelSize(R.dimen.px_m_margin) * PAGER_VISIBILITY_MULTIPLIER)));
+        paymentMethodPager.setOffscreenPageLimit(2);
+
+        paymentMethodPager.setAdapter(new PaymentMethodFragmentAdapter(getChildFragmentManager(), items));
+        indicator.attachToPager(paymentMethodPager);
+
+        toolbar = view.findViewById(R.id.toolbar);
+        configureToolbar(toolbar);
+        installmentsDescriptor = view.findViewById(R.id.installments_descriptor);
+        addConfirmButton(Session.getSession(view.getContext()).getDiscountRepository());
     }
 
-    @Override
-    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
-        final Session session = Session.getSession(view.getContext());
-        presenter =
-            new OneTapPresenter(session.getPaymentRepository(), session.getConfigurationModule().getPaymentSettings(),
-                session.getGroupsRepository());
-        configureView(view);
-        presenter.attachView(this);
-        trackScreen();
-    }
+    private void addConfirmButton(@NonNull final DiscountRepository discountRepository) {
+        final Discount discount = discountRepository.getDiscount();
 
-    @Override
-    public void showAmountRow(@NonNull final InstallmentsDescriptorView.Model installmentsModel) {
+        final String confirm = getContext().getString(R.string.px_confirm);
+        final Button.Actions buttonActions = new Button.Actions() {
+            @Override
+            public void onClick(final Action action) {
+                presenter.confirmPayment();
+            }
+        };
 
-        installmentsDescriptor.update(installmentsModel);
+        final Button button = new ButtonPrimary(new Button.Props(confirm), buttonActions);
+        final View view = button.render(linearContainer);
+        final int resMargin = discount == null ? R.dimen.px_m_margin : R.dimen.px_zero_height;
+        ViewUtils.setMarginTopInView(view, getContext().getResources().getDimensionPixelSize(resMargin));
+        linearContainer.addView(view);
+        confirmButton = view;
+        final int mMargin = getContext().getResources().getDimensionPixelSize(R.dimen.px_m_margin);
+        final LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+        layoutParams.setMargins(mMargin, layoutParams.topMargin, mMargin, mMargin);
     }
 
     private void trackScreen() {
@@ -134,13 +185,18 @@ public class OneTapFragment extends Fragment implements OneTap.View {
         }
     }
 
-    private void configureView(final View view) {
-        toolbar = view.findViewById(R.id.toolbar);
-        //TODO arreglar donde se agrega la vista de installments.
-        installmentsDescriptor = view.findViewById(R.id.installments_descriptor);
-        configureToolbar(toolbar);
-        oneTapView = view.findViewById(R.id.one_tap_container);
-        oneTapView.setOneTapModel(presenter);
+    @Override
+    public void showItemDescription(@NonNull final ElementDescriptorView.Model model) {
+        //Change when all together works
+        summaryView.updateElementDescriptor(model);
+//        if (toolbarSwitcher.getNextView().equals(toolbarWithElement)) {
+//                toolbarSwitcher.showNext();
+//        }
+    }
+
+    @Override
+    public void showAmountDescription(final AmountDescriptorView.Model amountDescriptorModel) {
+        summaryView.updateAmountDescriptor(amountDescriptorModel);
     }
 
     private void configureToolbar(final Toolbar toolbar) {
@@ -233,6 +289,11 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     }
 
     @Override
+    public void showAmountRow(@NonNull final InstallmentsDescriptorView.Model installmentsModel) {
+        installmentsDescriptor.update(installmentsModel);
+    }
+
+    @Override
     public void showPaymentResult(@NonNull final IPayment paymentResult) {
         //TODO refactor
         if (getActivity() != null) {
@@ -274,7 +335,7 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     @Override
     public void cancelLoading() {
         showToolbar();
-        oneTapView.showButton();
+        hideConfirmButton();
         restoreStatusBar();
 
         final FragmentManager childFragmentManager = getChildFragmentManager();
@@ -292,27 +353,27 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     }
 
     private void showToolbar() {
-        toolbar.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(VISIBLE);
     }
 
     @Override
     public void hideConfirmButton() {
-        oneTapView.hideConfirmButton();
+        confirmButton.setVisibility(INVISIBLE);
     }
 
     @Override
     public void hideToolbar() {
-        toolbar.setVisibility(View.INVISIBLE);
+        toolbar.setVisibility(INVISIBLE);
     }
 
     @Override
     public void startLoadingButton(final int paymentTimeout) {
-        final MeliButton button = oneTapView.findViewById(R.id.px_button_primary);
+
         final int[] location = new int[2];
-        button.getLocationOnScreen(location);
+        confirmButton.getLocationOnScreen(location);
 
         final ExplodeParams explodeParams =
-            new ExplodeParams(location[1] - button.getMeasuredHeight() / 2, button.getMeasuredHeight(),
+            new ExplodeParams(location[1] - confirmButton.getMeasuredHeight() / 2, confirmButton.getMeasuredHeight(),
                 (int) getContext().getResources().getDimension(R.dimen.px_m_margin),
                 getContext().getResources().getString(R.string.px_processing_payment_button),
                 paymentTimeout);

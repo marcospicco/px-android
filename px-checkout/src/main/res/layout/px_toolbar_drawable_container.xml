@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       xmlns:tools="http://schemas.android.com/tools"
+       tools:layout_height="wrap_content"
+       tools:layout_width="wrap_content"
+       tools:orientation="horizontal"
+       tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/px_xxs_margin"
+        tools:src="@drawable/px_badge_check"/>
+
+    <com.mercadopago.android.px.internal.view.MPTextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/px_xxs_margin"
+        android:layout_gravity="center"
+        android:textAppearance="@style/MLFont.Bold.Semi"
+        android:textColor="@color/ui_meli_black"
+        android:ellipsize="end"
+        android:textSize="@dimen/px_l_text"
+        android:lineSpacingExtra="0sp"
+        app:font_style="bold"
+        tools:text="@string/loading_message"/>
+
+</merge>

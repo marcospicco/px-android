@@ -22,32 +22,46 @@ import com.mercadopago.android.px.model.PaymentTypes;
 import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 import com.mercadopago.android.px.services.Callback;
+import com.mercadopago.android.px.internal.view.AmountDescriptorView;
+import com.mercadopago.android.px.internal.view.ElementDescriptorView;
+import com.mercadopago.android.px.internal.viewmodel.mappers.ElementDescriptorMapper;
+import com.mercadopago.android.px.internal.viewmodel.mappers.PaymentMethodDrawableItemMapper;
+import com.mercadopago.android.px.model.Sites;
+import java.math.BigDecimal;
 
 /* default */ class OneTapPresenter extends MvpPresenter<OneTap.View, ResourcesProvider>
     implements OneTap.Actions {
 
     @NonNull private final PaymentRepository paymentRepository;
+    @NonNull private final GroupsRepository groupsRepository;
     @NonNull private final PaymentSettingRepository configuration;
-    private final ExplodeDecoratorMapper explodeDecoratorMapper;
+    @NonNull private final ExplodeDecoratorMapper explodeDecoratorMapper;
+    @NonNull private final PaymentMethodDrawableItemMapper paymentMethodDrawableItemMapper;
+    @NonNull private final ElementDescriptorMapper elementDescriptorMapper;
     private OneTapMetadata oneTapMetadata;
 
     /* default */ OneTapPresenter(@NonNull final PaymentRepository paymentRepository,
-        @NonNull final PaymentSettingRepository configuration, @NonNull final GroupsRepository groupsRepository) {
+        @NonNull final PaymentSettingRepository configuration,
+        @NonNull final ElementDescriptorMapper elementDescriptorMapper,
+        @NonNull final GroupsRepository groupsRepository) {
         this.paymentRepository = paymentRepository;
         this.configuration = configuration;
+        this.groupsRepository = groupsRepository;
         explodeDecoratorMapper = new ExplodeDecoratorMapper();
+        this.elementDescriptorMapper = elementDescriptorMapper;
+        paymentMethodDrawableItemMapper = new PaymentMethodDrawableItemMapper();
 
-        groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
-            @Override
-            public void success(final PaymentMethodSearch paymentMethodSearch) {
-                oneTapMetadata = paymentMethodSearch.getOneTapMetadata();
-            }
+            groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
+                @Override
+                public void success(final PaymentMethodSearch paymentMethodSearch) {
+                    oneTapMetadata = paymentMethodSearch.getOneTapMetadata();
+                }
 
-            @Override
-            public void failure(final ApiException apiException) {
-                throw new IllegalStateException("groups missing rendering one tap");
-            }
-        });
+                @Override
+                public void failure(final ApiException apiException) {
+                    throw new IllegalStateException("groups missing rendering one tap");
+                }
+            });
     }
 
     @Override
@@ -159,9 +173,16 @@ import com.mercadopago.android.px.services.Callback;
 
     @Override
     public void onViewResumed() {
+        final ElementDescriptorView.Model elementDescriptorModel =
+            elementDescriptorMapper.map(configuration.getCheckoutPreference());
+        //TODO armar el modelo en serio
+        final AmountDescriptorView.Model amountDescriptorModel = new AmountDescriptorView.Model(
+            AmountDescriptorView.AmountType.POSITIVE, "Total", Sites.ARGENTINA.getCurrencyId(), new BigDecimal(100));
+        amountDescriptorModel.setAmountStyle(AmountDescriptorView.AmountStyle.BOLD);
+
         getView().showAmountRow(createInstallmentsDescriptorModel());
-        getView().updateViews();
-        paymentRepository.attach(this);
+        getView().showItemDescription(elementDescriptorModel);
+        getView().showAmountDescription(amountDescriptorModel);
 
         //If a payment was attempted, the exploding fragment is still visible when we go back to one tap fragment.
         //Example: call for authorize, after asking for cvv and pressing back, we go back to one tap and need to
@@ -169,6 +190,7 @@ import com.mercadopago.android.px.services.Callback;
         if (paymentRepository.hasPayment()) {
             getView().cancelLoading();
         }
+        paymentRepository.attach(this);
     }
 
     private InstallmentsDescriptorView.Model createInstallmentsDescriptorModel() {
@@ -184,6 +206,19 @@ import com.mercadopago.android.px.services.Callback;
     @Override
     public void attachView(final OneTap.View view) {
         super.attachView(view);
+
+        groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
+            @Override
+            public void success(final PaymentMethodSearch paymentMethodSearch) {
+                getView().configureView(paymentMethodDrawableItemMapper.map(paymentMethodSearch));
+            }
+
+            @Override
+            public void failure(final ApiException apiException) {
+                throw new IllegalStateException("OneTapFragment - attachView - getting groups error");
+            }
+        });
+
         paymentRepository.attach(this);
     }
 
