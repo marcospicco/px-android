@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
 import com.mercadolibre.android.ui.widgets.MeliButton;
 import com.mercadolibre.android.ui.widgets.MeliSnackbar;
 import com.mercadopago.android.px.R;
@@ -28,6 +29,10 @@ import com.mercadopago.android.px.internal.features.onetap.components.OneTapView
 import com.mercadopago.android.px.internal.features.plugins.PaymentProcessorActivity;
 import com.mercadopago.android.px.internal.tracker.Tracker;
 import com.mercadopago.android.px.internal.util.StatusBarDecorator;
+import com.mercadopago.android.px.internal.view.AmountDescriptorView;
+import com.mercadopago.android.px.internal.view.ElementDescriptorView;
+import com.mercadopago.android.px.internal.view.SummaryView;
+import com.mercadopago.android.px.internal.viewmodel.mappers.ElementDescriptorMapper;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.GenericPayment;
@@ -49,7 +54,10 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     /* default */ OneTapPresenter presenter;
 
     private Toolbar toolbar;
+    private ElementDescriptorView toolbarWithElement;
+    private ViewSwitcher toolbarSwitcher;
     private OneTapView oneTapView;
+    private SummaryView summaryView;
 
     public static Fragment getInstance() {
         return new OneTapFragment();
@@ -105,7 +113,9 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         final Session session = Session.getSession(view.getContext());
-        presenter = new OneTapPresenter(session.getPaymentRepository());
+        presenter =
+            new OneTapPresenter(session.getPaymentRepository(), session.getConfigurationModule().getPaymentSettings(),
+                new ElementDescriptorMapper(getString(R.string.px_review_summary_products)));
         configureView(view);
         presenter.attachView(this);
         trackScreen();
@@ -126,9 +136,28 @@ public class OneTapFragment extends Fragment implements OneTap.View {
 
     private void configureView(final View view) {
         toolbar = view.findViewById(R.id.toolbar);
+        summaryView = view.findViewById(R.id.summary_view);
+        toolbarSwitcher = view.findViewById(R.id.toolbar_switcher);
+        toolbarWithElement = view.findViewById(R.id.toolbar_with_element);
         configureToolbar(toolbar);
         oneTapView = view.findViewById(R.id.one_tap_container);
         oneTapView.setOneTapModel(presenter);
+
+
+    }
+
+    @Override
+    public void showItemDescription(@NonNull final ElementDescriptorView.Model model) {
+        //Change when all together works
+        summaryView.updateElementDescriptor(model);
+//        if (toolbarSwitcher.getNextView().equals(toolbarWithElement)) {
+//                toolbarSwitcher.showNext();
+//        }
+    }
+
+    @Override
+    public void showAmountDescription(final AmountDescriptorView.Model amountDescriptorModel) {
+        summaryView.addAmountDescriptor(amountDescriptorModel);
     }
 
     private void configureToolbar(final Toolbar toolbar) {

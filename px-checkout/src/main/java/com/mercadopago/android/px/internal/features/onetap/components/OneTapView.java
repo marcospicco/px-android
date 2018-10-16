@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.mercadopago.android.px.R;
-import com.mercadopago.android.px.configuration.ReviewAndConfirmConfiguration;
 import com.mercadopago.android.px.internal.di.ConfigurationModule;
 import com.mercadopago.android.px.internal.di.Session;
 import com.mercadopago.android.px.internal.features.onetap.OneTap;
@@ -59,14 +58,11 @@ public class OneTapView extends LinearLayout {
         final ConfigurationModule configurationModule = session.getConfigurationModule();
         final PaymentSettingRepository configuration = configurationModule.getPaymentSettings();
         final DiscountRepository discountRepository = session.getDiscountRepository();
-        final ReviewAndConfirmConfiguration reviewAndConfirmConfiguration =
-            configuration.getAdvancedConfiguration().getReviewAndConfirmConfiguration();
 
         session.getGroupsRepository().getGroups().execute(new Callback<PaymentMethodSearch>() {
             @Override
             public void success(final PaymentMethodSearch paymentMethodSearch) {
 
-                addItems(reviewAndConfirmConfiguration, configuration);
                 amountContainer = createAmountView(configuration, discountRepository, paymentMethodSearch);
                 addView(amountContainer);
                 addPaymentMethod(configuration, discountRepository, paymentMethodSearch);
@@ -82,19 +78,6 @@ public class OneTapView extends LinearLayout {
                 throw new IllegalStateException("groups missing rendering one tap");
             }
         });
-    }
-
-    private void addItems(@NonNull final ReviewAndConfirmConfiguration reviewAndConfirmConfiguration,
-        @NonNull final PaymentSettingRepository configuration) {
-
-        final Integer collectorIcon = reviewAndConfirmConfiguration.getCollectorIcon();
-        final String defaultMultipleTitle = getContext().getString(R.string.px_review_summary_products);
-        final int icon = collectorIcon == null ? R.drawable.px_review_item_default : collectorIcon;
-        final String itemsTitle = com.mercadopago.android.px.model.Item
-            .getItemsTitle(configuration.getCheckoutPreference().getItems(), defaultMultipleTitle);
-
-        final View view = new CollapsedItem(new CollapsedItem.Props(icon, itemsTitle)).render(this);
-        addView(view);
     }
 
     public void update() {

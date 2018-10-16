@@ -5,6 +5,8 @@ import com.mercadopago.android.px.internal.base.MvpView;
 import com.mercadopago.android.px.internal.callbacks.PaymentServiceHandler;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecorator;
 import com.mercadopago.android.px.internal.features.explode.ExplodingFragment;
+import com.mercadopago.android.px.internal.view.AmountDescriptorView;
+import com.mercadopago.android.px.internal.view.ElementDescriptorView;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.IPayment;
 import com.mercadopago.android.px.model.PaymentRecovery;
@@ -15,6 +17,8 @@ public interface OneTap {
     interface View extends MvpView {
 
         void cancel();
+
+        void showItemDescription(@NonNull ElementDescriptorView.Model model);
 
         void changePaymentMethod();
 
@@ -54,6 +58,8 @@ public interface OneTap {
         void updateViews();
 
         void showErrorSnackBar(@NonNull final MercadoPagoError error);
+
+        void showAmountDescription(AmountDescriptorView.Model amountDescriptorModel);
     }
 
     interface Actions extends PaymentServiceHandler {

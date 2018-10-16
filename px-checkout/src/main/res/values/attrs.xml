@@ -19,4 +19,14 @@
         <attr name="errorColor" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="PXElementDescriptorView">
+        <attr name="px_element_icon_height" format="dimension" />
+        <attr name="px_element_icon_width" format="dimension" />
+        <attr name="px_element_label_size" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="PXAmountDescriptorView">
+        <attr name="px_amount_descriptor_style" format="string"/>
+    </declare-styleable>
+
 </resources>

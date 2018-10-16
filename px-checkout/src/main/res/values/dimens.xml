@@ -64,6 +64,7 @@
     <!-- Text -->
     <dimen name="px_xxxxl_text">44dp</dimen>
     <dimen name="px_xxxl_text">26dp</dimen>
+    <dimen name="px_xxl_text">24dp</dimen>
     <dimen name="px_xl_text">22dp</dimen>
     <dimen name="px_l_text">20dp</dimen>
     <dimen name="px_m_text">18dp</dimen>

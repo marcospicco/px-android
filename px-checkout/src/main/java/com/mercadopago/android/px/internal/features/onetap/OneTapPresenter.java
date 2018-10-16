@@ -6,23 +6,35 @@ import com.mercadopago.android.px.internal.base.ResourcesProvider;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecoratorMapper;
 import com.mercadopago.android.px.internal.features.explode.ExplodingFragment;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
+import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
+import com.mercadopago.android.px.internal.util.CurrenciesUtil;
+import com.mercadopago.android.px.internal.view.AmountDescriptorView;
+import com.mercadopago.android.px.internal.view.ElementDescriptorView;
+import com.mercadopago.android.px.internal.viewmodel.mappers.ElementDescriptorMapper;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.GenericPayment;
-import com.mercadopago.android.px.model.IPayment;
 import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.PaymentRecovery;
+import com.mercadopago.android.px.model.Sites;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import java.math.BigDecimal;
 
 /* default */ class OneTapPresenter extends MvpPresenter<OneTap.View, ResourcesProvider>
     implements OneTap.Actions {
 
     @NonNull private final PaymentRepository paymentRepository;
+    @NonNull private final PaymentSettingRepository configuration;
     private final ExplodeDecoratorMapper explodeDecoratorMapper;
+    private final ElementDescriptorMapper elementDescriptorMapper;
 
-    /* default */ OneTapPresenter(@NonNull final PaymentRepository paymentRepository) {
+    /* default */ OneTapPresenter(@NonNull final PaymentRepository paymentRepository,
+        @NonNull final PaymentSettingRepository configuration,
+        @NonNull final ElementDescriptorMapper elementDescriptorMapper) {
         this.paymentRepository = paymentRepository;
+        this.configuration = configuration;
         explodeDecoratorMapper = new ExplodeDecoratorMapper();
+        this.elementDescriptorMapper = elementDescriptorMapper;
     }
 
     @Override
@@ -134,6 +146,15 @@ import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
 
     @Override
     public void onViewResumed() {
+        final ElementDescriptorView.Model elementDescriptorModel =
+            elementDescriptorMapper.map(configuration.getCheckoutPreference());
+        //TODO armar el modelo en serio
+        final AmountDescriptorView.Model amountDescriptorModel = new AmountDescriptorView.Model(
+            AmountDescriptorView.AmountType.POSITIVE, "Total", Sites.ARGENTINA.getCurrencyId(), new BigDecimal(100));
+        amountDescriptorModel.setAmountStyle(AmountDescriptorView.AmountStyle.BOLD);
+
+        getView().showItemDescription(elementDescriptorModel);
+        getView().showAmountDescription(amountDescriptorModel);
         getView().updateViews();
         paymentRepository.attach(this);
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import com.mercadopago.android.px.tracking.internal.Settings;
@@ -33,6 +34,7 @@ public class CheckoutExampleActivity extends AppCompatActivity {
         Settings.setTrackingEnvironment(TrackingEnvironments.STAGING);
 
         setContentView(R.layout.activity_checkout_example);
+
         mProgressBar = findViewById(R.id.progressBar);
         mRegularLayout = findViewById(R.id.regularLayout);
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       xmlns:app="http://schemas.android.com/apk/res-auto"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:paddingBottom="@dimen/px_xxs_margin"
+       android:weightSum="1"
+       tools:parentTag="android.widget.LinearLayout">
+
+    <com.mercadopago.android.px.internal.view.MPTextView
+        android:id="@+id/label"
+        android:layout_width="@dimen/px_zero_height"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_weight="0.6"
+        android:ellipsize="end"
+        android:gravity="center_vertical|start"
+        android:maxLines="1"
+        android:textColor="@color/px_summary_text_color"
+        android:textAppearance="@style/MLFont.Regular"
+        app:font_style="regular"
+        android:textSize="@dimen/px_xs_text"
+        tools:text="Total"/>
+
+    <com.mercadopago.android.px.internal.view.MPTextView
+        android:id="@+id/amount"
+        android:layout_width="@dimen/px_zero_height"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4"
+        android:gravity="center_vertical|end"
+        android:textColor="@color/px_summary_text_color"
+        android:textAppearance="@style/MLFont.Regular"
+        app:font_style="regular"
+        android:textSize="@dimen/px_xs_text"
+        tools:text="$124"/>
+
+</merge>

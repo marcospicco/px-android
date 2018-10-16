@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/px_white">
 
     <ScrollView
@@ -21,16 +21,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <com.mercadopago.android.px.internal.features.onetap.components.OneTapView
-                    android:id="@+id/one_tap_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/px_m_margin"
-                    android:paddingRight="@dimen/px_m_margin"
-                    android:gravity="center"/>
+            <com.mercadopago.android.px.internal.features.onetap.components.OneTapView
+                android:id="@+id/one_tap_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/px_m_margin"
+                android:paddingRight="@dimen/px_m_margin"/>
 
         </LinearLayout>
 
@@ -41,13 +41,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        app:elevation="0dp"
-        android:background="@color/px_transparent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/px_transparent"
+            android:elevation="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:elevation="0dp">
+
+            <ViewSwitcher
+                android:id="@+id/toolbar_switcher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ViewStub
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout="@layout/px_adapter_issuer"/>
+
+                <com.mercadopago.android.px.internal.view.ElementDescriptorView
+                    android:id="@+id/toolbar_with_element"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:px_element_icon_height="?attr/actionBarSize"
+                    app:px_element_icon_width="?attr/actionBarSize"
+                    app:px_element_label_size="@dimen/px_l_text"/>
+
+            </ViewSwitcher>
+        </android.support.v7.widget.Toolbar>
+
+        <com.mercadopago.android.px.internal.view.SummaryView
+            android:id="@+id/summary_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/px_xxs_margin"/>
+
+    </LinearLayout>
+
 
 </FrameLayout>
 
