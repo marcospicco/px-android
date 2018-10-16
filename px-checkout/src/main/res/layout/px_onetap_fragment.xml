@@ -53,6 +53,19 @@
             android:layout_gravity="center_horizontal"
             android:padding="@dimen/px_xxs_margin"/>
 
+        <com.mercadopago.android.px.internal.view.InstallmentsDescriptorView
+            android:id="@+id/installments_descriptor"
+            android:layout_marginLeft="@dimen/px_m_margin"
+            android:layout_marginStart="@dimen/px_m_margin"
+            android:layout_marginEnd="@dimen/px_m_margin"
+            android:layout_marginRight="@dimen/px_m_margin"
+            android:layout_marginTop="@dimen/px_s_margin"
+            android:layout_marginBottom="@dimen/px_s_margin"
+            android:layout_gravity="center_vertical"
+            android:textSize="@dimen/px_s_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <android.support.v4.view.ViewPager
             android:id="@+id/payment_method_pager"
             android:layout_width="match_parent"
@@ -74,11 +87,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-
-    <com.mercadopago.android.px.internal.view.InstallmentsDescriptorView
-        android:id="@+id/installments_descriptor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
 </FrameLayout>
 

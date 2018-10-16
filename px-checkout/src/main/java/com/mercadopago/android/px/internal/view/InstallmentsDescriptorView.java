@@ -100,12 +100,6 @@ public class InstallmentsDescriptorView extends MPTextView {
 
         @Nullable
         public PayerCost getPayerCost() {
-            //TODO borrar, era solo para probar
-//            if (payerCost != null) {
-//                payerCost.setInstallmentRate(new BigDecimal(10));
-//                payerCost.setTotalAmount(new BigDecimal(400.90));
-//                payerCost.setInstallments(3);
-//            }
             return payerCost;
         }
 
