@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/px_m_margin"
+        app:cardBackgroundColor="#de1a3a83"
         app:cardCornerRadius="@dimen/px_xs_margin"
         app:cardElevation="2dp">
 
@@ -19,30 +19,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@drawable/px_new_card_layout">
-
-                <ImageView
-                    android:id="@+id/mpsdkCardLowApiImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/px_white"/>
-
-                <ImageView
-                    android:id="@+id/mpsdkCardLollipopImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@color/px_white"/>
-
-            </FrameLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#de1a3a83"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="1">
@@ -56,29 +35,23 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/px_card_back_shadow"/>
-
                 </FrameLayout>
 
             </LinearLayout>
 
 
+            <!-- card content -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/px_transparent"
                 android:orientation="vertical"
-                android:visibility="visible"
                 android:weightSum="1">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="start"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_margin="@dimen/px_s_margin"
                     android:layout_weight="0.4">
 
                     <FrameLayout
@@ -101,110 +74,81 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"/>
 
-                    <com.mercadopago.android.px.internal.view.MPTextView
-                        android:id="@+id/mpsdkCardSecurityCodeViewFront"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|end|bottom"
-                        android:shadowColor="@color/px_base_text"
-                        android:shadowDy="2"
-                        android:shadowRadius="2"
-                        android:textColor="@color/white"
-                        android:textSize="18dp"
-                        app:font_style="mono_regular"
-                        tools:text="1234"/>
-
                 </FrameLayout>
 
-                <FrameLayout
+
+                <com.mercadopago.android.px.internal.view.MPTextView
+                    android:id="@+id/card_number"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="0.25">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:paddingEnd="15dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="15dp"
-                        android:paddingStart="15dp">
-
-                        <com.mercadopago.android.px.internal.view.MPTextView
-                            android:id="@+id/card_number"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="bottom"
-                            android:maxLength="40"
-                            android:shadowColor="@color/px_base_text"
-                            android:shadowDy="2"
-                            android:shadowRadius="2"
-                            android:textColor="@color/white"
-                            app:autoSizeMaxTextSize="24dp"
-                            app:autoSizeMinTextSize="10dp"
-                            app:autoSizeStepGranularity="1dp"
-                            app:autoSizeTextType="uniform"
-                            app:font_style="mono_regular"
-                            tools:text="1234 1234 1234 1234"/>
-
-                    </FrameLayout>
-                </FrameLayout>
+                    android:layout_margin="@dimen/px_s_margin"
+                    android:layout_weight="0.25"
+                    android:gravity="bottom"
+                    android:maxLength="40"
+                    android:shadowColor="@color/px_base_text"
+                    android:shadowDy="2"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
+                    app:autoSizeMaxTextSize="24dp"
+                    app:autoSizeMinTextSize="10dp"
+                    app:autoSizeStepGranularity="1dp"
+                    app:autoSizeTextType="uniform"
+                    app:font_style="mono_regular"
+                    tools:text="1234 1234 1234 1234"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="12dp"
-                    android:layout_weight="0.15"
+                    android:layout_marginTop="@dimen/px_xs_margin"
+                    android:layout_weight="0.25"
+                    android:weightSum="1"
                     android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:weightSum="1">
 
                         <com.mercadopago.android.px.internal.view.MPTextView
                             android:id="@+id/card_holder_name"
                             android:layout_width="0dp"
+                            android:layout_marginLeft="@dimen/px_s_margin"
+                            android:layout_marginStart="@dimen/px_xs_margin"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.6"
                             android:gravity="start"
                             android:maxLines="1"
-                            android:paddingLeft="15dp"
-                            android:paddingStart="15dp"
+                            android:text="@string/px_cardholder_name_short"
                             android:shadowColor="@color/px_base_text"
                             android:shadowDy="2"
                             android:shadowRadius="2"
-                            android:text="@string/px_cardholder_name_short"
                             android:textColor="@color/white"
-                            android:textSize="14dp"/>
+                            android:textSize="@dimen/px_xs_text"
+                            app:autoSizeMaxTextSize="24dp"
+                            app:autoSizeMinTextSize="10dp"
+                            app:autoSizeStepGranularity="1dp"
+                            app:autoSizeTextType="uniform"
+                            app:font_style="mono_regular"/>
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.4"
-                            android:gravity="end"
-                            android:paddingEnd="15dp"
-                            android:paddingRight="15dp">
+                    <com.mercadopago.android.px.internal.view.MPTextView
+                        android:id="@+id/exp_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px_s_margin"
+                        android:layout_marginStart="@dimen/px_xs_margin"
+                        android:layout_weight="0.4"
+                        android:shadowColor="@color/px_base_text"
+                        android:shadowDy="2"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        app:autoSizeMaxTextSize="24dp"
+                        app:autoSizeMinTextSize="10dp"
+                        app:autoSizeStepGranularity="1dp"
+                        app:autoSizeTextType="uniform"
+                        app:font_style="mono_regular"
+                        tools:text="MM/YY"/>
 
-                            <com.mercadopago.android.px.internal.view.MPTextView
-                                android:id="@+id/exp_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:shadowColor="@color/px_base_text"
-                                android:shadowDy="2"
-                                android:shadowRadius="2"
-                                android:textColor="@color/white"
-                                android:textSize="14dp"
-                                tools:text="MM/YY"/>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
+
         </FrameLayout>
 
     </android.support.v7.widget.CardView>
-
-</FrameLayout>
+</LinearLayout>

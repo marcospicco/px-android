@@ -1,7 +1,6 @@
 package com.mercadopago.android.px.internal.features.onetap.components;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,9 +26,7 @@ public class PaymentMethodFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final CardView paymentMethod = view.findViewById(R.id.payment_method);
         final Random rnd = new Random();
-        final ColorDrawable colorDrawable =
-            new ColorDrawable(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)));
-
-        paymentMethod.setForeground(colorDrawable);
+        final int argb = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        paymentMethod.setCardBackgroundColor(argb);
     }
 }
