@@ -9,6 +9,7 @@ import com.mercadopago.android.px.internal.repository.GroupsRepository;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
 import com.mercadopago.android.px.internal.view.InstallmentsDescriptorView;
+import com.mercadopago.android.px.internal.viewmodel.EmptyInstallmentsDescriptor;
 import com.mercadopago.android.px.internal.viewmodel.InstallmentsDescriptorNoPayerCost;
 import com.mercadopago.android.px.internal.viewmodel.InstallmentsDescriptorWithPayerCost;
 import com.mercadopago.android.px.model.BusinessPayment;
@@ -51,17 +52,17 @@ import java.math.BigDecimal;
         this.elementDescriptorMapper = elementDescriptorMapper;
         paymentMethodDrawableItemMapper = new PaymentMethodDrawableItemMapper();
 
-            groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
-                @Override
-                public void success(final PaymentMethodSearch paymentMethodSearch) {
-                    oneTapMetadata = paymentMethodSearch.getOneTapMetadata();
-                }
+        groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
+            @Override
+            public void success(final PaymentMethodSearch paymentMethodSearch) {
+                oneTapMetadata = paymentMethodSearch.getOneTapMetadata();
+            }
 
-                @Override
-                public void failure(final ApiException apiException) {
-                    throw new IllegalStateException("groups missing rendering one tap");
-                }
-            });
+            @Override
+            public void failure(final ApiException apiException) {
+                throw new IllegalStateException("groups missing rendering one tap");
+            }
+        });
     }
 
     @Override
@@ -196,9 +197,14 @@ import java.math.BigDecimal;
     private InstallmentsDescriptorView.Model createInstallmentsDescriptorModel() {
         final String paymentTypeId = oneTapMetadata.getPaymentTypeId();
         if (PaymentTypes.isCreditCardPaymentType(paymentTypeId)) {
+            //This model is useful for Credit Card only
             return InstallmentsDescriptorWithPayerCost.createFrom(configuration, oneTapMetadata.getCard());
+        } else if (!oneTapMetadata.isCard() || PaymentTypes.DEBIT_CARD.equals(paymentTypeId) ||
+            PaymentTypes.PREPAID_CARD.equals(paymentTypeId)) {
+            //This model is useful in case of One payment method (account money or debit) to represent an empty row
+            return EmptyInstallmentsDescriptor.create();
         } else {
-            //TODO fix account money case
+            //This model is useful in case of Two payment methods (account money and debit) to represent the Debit row
             return InstallmentsDescriptorNoPayerCost.createFrom(configuration, oneTapMetadata.getCard());
         }
     }

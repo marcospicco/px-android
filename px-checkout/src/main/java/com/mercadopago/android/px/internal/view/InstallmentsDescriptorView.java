@@ -39,10 +39,14 @@ public class InstallmentsDescriptorView extends MPTextView {
 
     public void update(@NonNull final Model model) {
         final SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
-        updateInstallmentsDescription(model, spannableStringBuilder);
-        updateTotalAmountDescription(model, spannableStringBuilder);
-        updateInterestDescription(model, spannableStringBuilder);
-        updateCFT(model, spannableStringBuilder);
+        if (model.isEmpty()) {
+            spannableStringBuilder.append(" ");
+        } else {
+            updateInstallmentsDescription(model, spannableStringBuilder);
+            updateTotalAmountDescription(model, spannableStringBuilder);
+            updateInterestDescription(model, spannableStringBuilder);
+            updateCFT(model, spannableStringBuilder);
+        }
         setText(spannableStringBuilder);
     }
 
@@ -79,19 +83,24 @@ public class InstallmentsDescriptorView extends MPTextView {
         model.updateCFTSpannable(spannableStringBuilder, getContext());
     }
 
-    //TODO falta pasar el payment type, o hacer un modelo abstracto, al cual le podamos pedir los spannables
-    //TODO que haya dos implementaciones del modelo, uno para debito y otro para credito, entonces devuelven los
-    //TODO textos según la logica de cada uno.
     public abstract static class Model {
-        private final String currencyId;
-        private final PayerCost payerCost;
-        private final BigDecimal totalAmount;
+        private String currencyId;
+        private PayerCost payerCost;
+        private BigDecimal totalAmount;
 
         protected Model(@NonNull final String currencyId, @Nullable final PayerCost payerCost,
             @NonNull final BigDecimal totalAmount) {
             this.currencyId = currencyId;
             this.payerCost = payerCost;
             this.totalAmount = totalAmount;
+        }
+
+        protected Model() {
+
+        }
+
+        public boolean isEmpty() {
+            return currencyId == null && payerCost == null && totalAmount == null;
         }
 
         public String getCurrencyId() {
