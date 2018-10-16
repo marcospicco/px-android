@@ -5,36 +5,45 @@ import com.mercadopago.android.px.internal.base.MvpPresenter;
 import com.mercadopago.android.px.internal.base.ResourcesProvider;
 import com.mercadopago.android.px.internal.features.explode.ExplodeDecoratorMapper;
 import com.mercadopago.android.px.internal.features.explode.ExplodingFragment;
+import com.mercadopago.android.px.internal.repository.GroupsRepository;
 import com.mercadopago.android.px.internal.repository.PaymentRepository;
 import com.mercadopago.android.px.internal.repository.PaymentSettingRepository;
-import com.mercadopago.android.px.internal.util.CurrenciesUtil;
 import com.mercadopago.android.px.internal.view.AmountDescriptorView;
 import com.mercadopago.android.px.internal.view.ElementDescriptorView;
 import com.mercadopago.android.px.internal.viewmodel.mappers.ElementDescriptorMapper;
+import com.mercadopago.android.px.internal.viewmodel.mappers.PaymentMethodDrawableItemMapper;
 import com.mercadopago.android.px.model.BusinessPayment;
 import com.mercadopago.android.px.model.Card;
 import com.mercadopago.android.px.model.GenericPayment;
 import com.mercadopago.android.px.model.Payment;
+import com.mercadopago.android.px.model.PaymentMethodSearch;
 import com.mercadopago.android.px.model.PaymentRecovery;
 import com.mercadopago.android.px.model.Sites;
+import com.mercadopago.android.px.model.exceptions.ApiException;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+import com.mercadopago.android.px.services.Callback;
 import java.math.BigDecimal;
 
 /* default */ class OneTapPresenter extends MvpPresenter<OneTap.View, ResourcesProvider>
     implements OneTap.Actions {
 
     @NonNull private final PaymentRepository paymentRepository;
+    @NonNull private final GroupsRepository groupsRepository;
     @NonNull private final PaymentSettingRepository configuration;
-    private final ExplodeDecoratorMapper explodeDecoratorMapper;
-    private final ElementDescriptorMapper elementDescriptorMapper;
+    @NonNull private final ExplodeDecoratorMapper explodeDecoratorMapper;
+    @NonNull private final PaymentMethodDrawableItemMapper paymentMethodDrawableItemMapper;
+    @NonNull private final ElementDescriptorMapper elementDescriptorMapper;
 
     /* default */ OneTapPresenter(@NonNull final PaymentRepository paymentRepository,
         @NonNull final PaymentSettingRepository configuration,
-        @NonNull final ElementDescriptorMapper elementDescriptorMapper) {
+        @NonNull final ElementDescriptorMapper elementDescriptorMapper,
+        @NonNull final GroupsRepository groupsRepository) {
         this.paymentRepository = paymentRepository;
         this.configuration = configuration;
+        this.groupsRepository = groupsRepository;
         explodeDecoratorMapper = new ExplodeDecoratorMapper();
         this.elementDescriptorMapper = elementDescriptorMapper;
+        paymentMethodDrawableItemMapper = new PaymentMethodDrawableItemMapper();
     }
 
     @Override
@@ -146,6 +155,7 @@ import java.math.BigDecimal;
 
     @Override
     public void onViewResumed() {
+
         final ElementDescriptorView.Model elementDescriptorModel =
             elementDescriptorMapper.map(configuration.getCheckoutPreference());
         //TODO armar el modelo en serio
@@ -155,8 +165,6 @@ import java.math.BigDecimal;
 
         getView().showItemDescription(elementDescriptorModel);
         getView().showAmountDescription(amountDescriptorModel);
-        getView().updateViews();
-        paymentRepository.attach(this);
 
         //If a payment was attempted, the exploding fragment is still visible when we go back to one tap fragment.
         //Example: call for authorize, after asking for cvv and pressing back, we go back to one tap and need to
@@ -164,11 +172,25 @@ import java.math.BigDecimal;
         if (paymentRepository.hasPayment()) {
             getView().cancelLoading();
         }
+        paymentRepository.attach(this);
     }
 
     @Override
     public void attachView(final OneTap.View view) {
         super.attachView(view);
+
+        groupsRepository.getGroups().execute(new Callback<PaymentMethodSearch>() {
+            @Override
+            public void success(final PaymentMethodSearch paymentMethodSearch) {
+                getView().configureView(paymentMethodDrawableItemMapper.map(paymentMethodSearch));
+            }
+
+            @Override
+            public void failure(final ApiException apiException) {
+                throw new IllegalStateException("OneTapFragment - attachView - getting groups error");
+            }
+        });
+
         paymentRepository.attach(this);
     }
 

@@ -273,7 +273,7 @@ public class PaymentVaultActivity extends MercadoPagoBaseActivity
     }
 
     @Override
-    public void showSelectedItem(PaymentMethodSearchItem item) {
+    public void showSelectedItem(final PaymentMethodSearchItem item) {
         final Intent intent = new Intent(this, PaymentVaultActivity.class);
         intent.putExtras(getIntent());
         intent.putExtra("selectedSearchItem", JsonUtil.getInstance().toJson(item));

@@ -55,7 +55,18 @@ public class SummaryView extends LinearLayout {
         addView(elementDescriptorView);
     }
 
-    public void addAmountDescriptor(final AmountDescriptorView.Model amountDescriptorModel) {
+    public void updateAmountDescriptor(final AmountDescriptorView.Model amountDescriptorModel) {
+        for (int i = 0; i < getChildCount(); i++) {
+            final View childAt = getChildAt(i);
+            if (childAt instanceof AmountDescriptorView) {
+                ((AmountDescriptorView) childAt).update(amountDescriptorModel);
+                return;
+            }
+        }
+        addAmountDescriptor(amountDescriptorModel);
+    }
+
+    private void addAmountDescriptor(final AmountDescriptorView.Model amountDescriptorModel) {
         final AmountDescriptorView amountDescriptorView = new AmountDescriptorView(getContext());
         amountDescriptorView.setAmountDescriptorStyle(amountDescriptorModel.getAmountStyle());
         amountDescriptorView.update(amountDescriptorModel);

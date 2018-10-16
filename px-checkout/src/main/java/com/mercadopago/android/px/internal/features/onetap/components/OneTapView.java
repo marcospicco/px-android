@@ -33,7 +33,7 @@ public class OneTapView extends LinearLayout {
     private View amountContainer;
     private View paymentMethodContainer;
     private View termsContainer;
-    private View confirmButton;
+//    private View confirmButton;
 
     public OneTapView(final Context context) {
         this(context, null);
@@ -65,12 +65,12 @@ public class OneTapView extends LinearLayout {
 
                 amountContainer = createAmountView(configuration, discountRepository, paymentMethodSearch);
                 addView(amountContainer);
-                addPaymentMethod(configuration, discountRepository, paymentMethodSearch);
+//                addPaymentMethod(configuration, discountRepository, paymentMethodSearch);
                 termsContainer = createTermsView(discountRepository);
                 if (termsContainer != null) {
                     addView(termsContainer);
                 }
-                confirmButton = addConfirmButton(discountRepository);
+//                confirmButton = addConfirmButton(discountRepository);
             }
 
             @Override
@@ -169,37 +169,5 @@ public class OneTapView extends LinearLayout {
                 .render(this);
         }
         return null;
-    }
-
-    private View addConfirmButton(@NonNull final DiscountRepository discountRepository) {
-        final Discount discount = discountRepository.getDiscount();
-
-        final String confirm = getContext().getString(R.string.px_confirm);
-        final Button.Actions buttonActions = new Button.Actions() {
-            @Override
-            public void onClick(final Action action) {
-                if (actionCallback != null) {
-                    actionCallback.confirmPayment();
-                }
-            }
-
-        };
-
-        final Button button = new ButtonPrimary(new Button.Props(confirm), buttonActions);
-        final View view = button.render(this);
-        final int resMargin = discount == null ? R.dimen.px_m_margin : R.dimen.px_zero_height;
-        ViewUtils.setMarginTopInView(view, getContext().getResources().getDimensionPixelSize(resMargin));
-        addView(view);
-        return view;
-    }
-
-    public void hideConfirmButton() {
-        confirmButton.setVisibility(INVISIBLE);
-    }
-
-    public void showButton() {
-        if (confirmButton != null) {
-            confirmButton.setVisibility(VISIBLE);
-        }
     }
 }

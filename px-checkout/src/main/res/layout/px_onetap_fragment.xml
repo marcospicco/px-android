@@ -6,42 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/px_white">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:fillViewport="true"
-        android:gravity="center"
-        android:overScrollMode="never"
-        android:scrollbars="none">
-
-        <!-- Double linear layout is necessary to center content with scrollview -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.mercadopago.android.px.internal.features.onetap.components.OneTapView
-                android:id="@+id/one_tap_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/px_m_margin"
-                android:paddingRight="@dimen/px_m_margin"/>
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/exploding_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <LinearLayout
+        android:id="@+id/linear_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -56,7 +22,6 @@
             app:elevation="0dp">
 
             <ViewSwitcher
-                android:id="@+id/toolbar_switcher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -66,7 +31,6 @@
                     android:layout="@layout/px_adapter_issuer"/>
 
                 <com.mercadopago.android.px.internal.view.ElementDescriptorView
-                    android:id="@+id/toolbar_with_element"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -84,7 +48,26 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/px_xxs_margin"/>
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/payment_method_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <com.mercadopago.android.px.internal.view.ScrollingPagerIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:px_spi_dotColor="#19000000"
+            app:px_spi_dotSelectedColor="#3483fa"/>
+
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/exploding_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
 </FrameLayout>

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import com.mercadopago.android.px.internal.features.cardvault.CardVaultActivity;
-import com.mercadopago.android.px.internal.features.guessing_card.GuessingCardActivity;
 import com.mercadopago.android.px.internal.util.JsonUtil;
 import com.mercadopago.android.px.model.BankDeal;
 import com.mercadopago.android.px.model.Card;

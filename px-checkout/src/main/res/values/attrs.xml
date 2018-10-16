@@ -29,4 +29,27 @@
         <attr name="px_amount_descriptor_style" format="string"/>
     </declare-styleable>
 
+
+    <declare-styleable name="PXScrollingPagerIndicator">
+        <attr name="px_spi_dotColor" format="color"/>
+        <attr name="px_spi_dotSelectedColor" format="color"/>
+        <attr name="px_spi_dotSize" format="dimension"/>
+        <attr name="px_spi_dotSelectedSize" format="dimension"/>
+        <attr name="px_spi_dotSpacing" format="dimension"/>
+        <attr name="px_spi_visibleDotCount" format="integer"/>
+        <attr name="px_spi_visibleDotThreshold" format="integer"/>
+        <attr name="px_spi_looped" format="boolean"/>
+    </declare-styleable>
+
+    <style name="PXScrollingPagerIndicator">
+        <item name="px_spi_dotColor">@android:color/darker_gray</item>
+        <item name="px_spi_dotSelectedColor">@android:color/darker_gray</item>
+        <item name="px_spi_dotSize">6dp</item>
+        <item name="px_spi_dotSelectedSize">10dp</item>
+        <item name="px_spi_dotSpacing">8dp</item>
+        <item name="px_spi_visibleDotCount">5</item>
+        <item name="px_spi_visibleDotThreshold">2</item>
+        <item name="px_spi_looped">false</item>
+    </style>
+
 </resources>
