@@ -52,7 +52,6 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 public class OneTapFragment extends Fragment implements OneTap.View {
 
@@ -144,7 +143,7 @@ public class OneTapFragment extends Fragment implements OneTap.View {
         indicator.attachToPager(paymentMethodPager);
 
         toolbar = view.findViewById(R.id.toolbar);
-        configureToolbar(toolbar);
+        showToolbar();
         addConfirmButton(Session.getSession(view.getContext()).getDiscountRepository());
     }
 
@@ -195,26 +194,6 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     @Override
     public void showAmountDescription(final AmountDescriptorView.Model amountDescriptorModel) {
         summaryView.updateAmountDescriptor(amountDescriptorModel);
-    }
-
-    private void configureToolbar(final Toolbar toolbar) {
-        final AppCompatActivity activity = (AppCompatActivity) getActivity();
-        if (activity != null && toolbar != null) {
-            activity.setSupportActionBar(toolbar);
-            final ActionBar supportActionBar = activity.getSupportActionBar();
-            if (supportActionBar != null) {
-                supportActionBar.setDisplayShowTitleEnabled(false);
-                supportActionBar.setDisplayHomeAsUpEnabled(true);
-                supportActionBar.setDisplayShowHomeEnabled(true);
-            }
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View v) {
-                    presenter.cancel();
-                }
-            });
-        }
-        showToolbar();
     }
 
     @Override
@@ -346,7 +325,24 @@ public class OneTapFragment extends Fragment implements OneTap.View {
     }
 
     private void showToolbar() {
-        toolbar.setVisibility(VISIBLE);
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        if (activity != null) {
+            activity.setSupportActionBar(toolbar);
+
+            final ActionBar supportActionBar = activity.getSupportActionBar();
+            if (supportActionBar != null) {
+                supportActionBar.setDisplayShowTitleEnabled(false);
+                supportActionBar.setDisplayHomeAsUpEnabled(true);
+                supportActionBar.setDisplayShowHomeEnabled(true);
+            }
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    presenter.cancel();
+                }
+            });
+        }
     }
 
     @Override
@@ -356,7 +352,11 @@ public class OneTapFragment extends Fragment implements OneTap.View {
 
     @Override
     public void hideToolbar() {
-        toolbar.setVisibility(INVISIBLE);
+        if (getActivity() != null) {
+            final ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            supportActionBar.setDisplayShowHomeEnabled(false);
+        }
     }
 
     @Override

@@ -11,9 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/px_m_margin"
-        app:cardBackgroundColor="#00a3da"
         app:cardCornerRadius="@dimen/px_xs_margin"
         app:cardElevation="2dp">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/px_gradient_account_money"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end|right"
+            android:background="@drawable/px_account_money_sign"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|end|right"
+            android:background="@drawable/px_patern_account_money"
+            android:scaleType="centerInside"/>
+
 
         <com.mercadopago.android.px.internal.view.MPTextView
             android:id="@+id/label"
