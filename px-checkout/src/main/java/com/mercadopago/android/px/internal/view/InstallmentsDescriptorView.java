@@ -44,7 +44,6 @@ public class InstallmentsDescriptorView extends MPTextView {
         updateCFT(model, spannableStringBuilder);
         setText(spannableStringBuilder);
     }
-    //TODO pasar todo lo del spannable a una factory como la de CurrencyFormatter
 
     private void updateInstallmentsDescription(@NonNull final Model model,
         @NonNull final SpannableStringBuilder spannableStringBuilder) {
@@ -57,69 +56,26 @@ public class InstallmentsDescriptorView extends MPTextView {
             .normalDecimals()
             .into(this)
             .toSpannable();
-        model.updateInstallmentsRowSpannable(spannableStringBuilder, getContext(), amount);
+        model.updateInstallmentsDescriptionSpannable(spannableStringBuilder, getContext(), amount);
     }
 
     private void updateInterestDescription(@NonNull final Model model,
         @NonNull final SpannableStringBuilder spannableStringBuilder) {
 
-        if (model.hasMultipleInstallments() &&
-            BigDecimal.ZERO.compareTo(model.getPayerCost().getInstallmentRate()) == 0) {
-            final int initialIndex = spannableStringBuilder.length();
-            final String separator = " ";
-            final String description = getContext().getString(R.string.px_zero_rate);
-            spannableStringBuilder.append(separator);
-            spannableStringBuilder.append(description);
-            final int endIndex = separator.length() + description.length();
-            final ForegroundColorSpan installmentsDescriptionColor =
-                new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.px_discount_description));
-            spannableStringBuilder
-                .setSpan(installmentsDescriptionColor, initialIndex, initialIndex + endIndex,
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        }
-        //TODO preguntar: si hay una única cuota seleccionada, igual se muestra el "sin interes"?
+        model.updateInterestDescriptionSpannable(spannableStringBuilder, getContext());
 
     }
 
     private void updateTotalAmountDescription(@NonNull final Model model,
         @NonNull final SpannableStringBuilder spannableStringBuilder) {
 
-        if (BigDecimal.ZERO.compareTo(model.getPayerCost().getInstallmentRate()) < 0) {
-            //Si hay intereses
-            final CharSequence totalAmount = TextFormatter.withCurrencyId(model.getCurrencyId())
-                .amount(model.getPayerCost().getTotalAmount())
-                .normalDecimals()
-                .into(this)
-                //TODO no está funcionando el holder, no se muestran los paréntesis
-                .holder(R.string.px_total_amount_holder)
-                .toSpannable();
-            final int initialIndex = spannableStringBuilder.length();
-            final String separator = " ";
-            spannableStringBuilder.append(separator);
-            spannableStringBuilder.append(totalAmount);
-            final int endIndex = separator.length() + totalAmount.length();
-            final ForegroundColorSpan installmentsDescriptionColor =
-                new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.ui_meli_grey));
-            spannableStringBuilder
-                .setSpan(installmentsDescriptionColor, initialIndex, initialIndex + endIndex,
-                    Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        }
+        model.updateTotalAmountDescriptionSpannable(spannableStringBuilder, getContext());
     }
 
     private void updateCFT(@NonNull final Model model,
         @NonNull final SpannableStringBuilder spannableStringBuilder) {
-        final int initialIndex = spannableStringBuilder.length();
-        final String cftDescription =
-            getContext().getString(R.string.px_installments_cft, model.getPayerCost().getCFTPercent());
-        final String separator = " ";
-        spannableStringBuilder.append(separator);
-        spannableStringBuilder.append(cftDescription);
-        final int endIndex = separator.length() + cftDescription.length();
-        final ForegroundColorSpan installmentsDescriptionColor =
-            new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.ui_meli_grey));
-        spannableStringBuilder
-            .setSpan(installmentsDescriptionColor, initialIndex, initialIndex + endIndex,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+        model.updateCFTSpannable(spannableStringBuilder, getContext());
     }
 
     //TODO falta pasar el payment type, o hacer un modelo abstracto, al cual le podamos pedir los spannables
@@ -156,12 +112,23 @@ public class InstallmentsDescriptorView extends MPTextView {
             return totalAmount;
         }
 
-        boolean hasMultipleInstallments() {
+        protected boolean hasMultipleInstallments() {
             return payerCost != null && payerCost.getInstallments() > 1;
         }
 
-        public abstract void updateInstallmentsRowSpannable(
+        public abstract void updateInstallmentsDescriptionSpannable(
             @NonNull final SpannableStringBuilder spannableStringBuilder,
             @NonNull final Context context, @NonNull final CharSequence amount);
+
+        public abstract void updateInterestDescriptionSpannable(
+            @NonNull final SpannableStringBuilder spannableStringBuilder,
+            @NonNull final Context context);
+
+        public abstract void updateTotalAmountDescriptionSpannable(
+            @NonNull final SpannableStringBuilder spannableStringBuilder,
+            @NonNull final Context context);
+
+        public abstract void updateCFTSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
+            @NonNull final Context context);
     }
 }

@@ -18,20 +18,38 @@ import java.math.BigDecimal;
  * Model used to instanciate InstallmentsDescriptorView
  * For payment methods without payer costs: debit_card, account_money, prepaid_card
  */
-public final class InstallmentsRowNoPayerCost extends InstallmentsDescriptorView.Model {
+public final class InstallmentsDescriptorNoPayerCost extends InstallmentsDescriptorView.Model {
 
-    private InstallmentsRowNoPayerCost(@NonNull final String currencyId,
+    private InstallmentsDescriptorNoPayerCost(@NonNull final String currencyId,
         @Nullable final PayerCost payerCost,
         @NonNull final BigDecimal totalAmount) {
         super(currencyId, payerCost, totalAmount);
     }
 
     @Override
-    public void updateInstallmentsRowSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
+    public void updateInstallmentsDescriptionSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
         @NonNull final Context context, @NonNull final CharSequence amount) {
         final InstallmentFormatter installmentFormatter = new InstallmentFormatter(spannableStringBuilder, context)
             .withTextColor(ContextCompat.getColor(context, R.color.ui_meli_black));
         installmentFormatter.build(amount);
+    }
+
+    @Override
+    public void updateInterestDescriptionSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
+        @NonNull final Context context) {
+        //Do nothing
+    }
+
+    @Override
+    public void updateTotalAmountDescriptionSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
+        @NonNull final Context context) {
+        //Do nothing
+    }
+
+    @Override
+    public void updateCFTSpannable(@NonNull final SpannableStringBuilder spannableStringBuilder,
+        @NonNull final Context context) {
+        //Do nothing
     }
 
     public static InstallmentsDescriptorView.Model createFrom(@NonNull final PaymentSettingRepository configuration,
@@ -40,6 +58,7 @@ public final class InstallmentsRowNoPayerCost extends InstallmentsDescriptorView
         final PayerCost payerCost = card == null ? null: card.getAutoSelectedInstallment();
         final String currencyId = checkoutPreference.getSite().getCurrencyId();
         final BigDecimal totalAmount = checkoutPreference.getTotalAmount();
-        return new InstallmentsRowNoPayerCost(currencyId, payerCost, totalAmount);
+        return new InstallmentsDescriptorNoPayerCost(currencyId, payerCost, totalAmount);
     }
+
 }
